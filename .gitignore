@@ -1,0 +1,44 @@
+# Flutter specific rules
+**/android/*
+**/ios/*
+**/build/*
+**/.dart_tool/*
+**/.packages
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.metadata
+**/.idea/*
+**/.vscode/*
+**/test/*
+**/web/*
+**/windows/*
+**/macos/*
+**/linux/*
+**/*.iml
+**/.DS_Store
+**/assets/*
+**/lib/data/*
+**/lib/resources/*
+**/lib/routers/*
+**/lib/view_models/*
+
+# Pubspec lock file
+pubspec.lock
+
+# Firebase related files
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
+**/lib/firebase_options.dart
+
+# Firebase CLI config files
+.firebase/
+.firebaserc
+firebase.json
+firestore.indexes.json
+firestore.rules
+storage.rules
+
+# Firebase Emulator related files
+firebase-debug.log
+firebase-debug.*
+**/.firebase/
