@@ -11,21 +11,21 @@ class UnregisterTile extends StatelessWidget {
   const UnregisterTile({
     super.key,
     required this.routeManager,
-    required this.firebaseViewModel,
+    //  required this.firebaseViewModel,
   });
 
   final RouteManager routeManager;
-  final FirebaseViewModel firebaseViewModel;
+  // final FirebaseViewModel firebaseViewModel;
 
   /// 退会画面への遷移処理
   Future<void> _navigateToUnregisterScreen(BuildContext context) async {
-    await routeManager.push<UnregisterScreen>(
-      context,
-      UnregisterScreen(
-        routeManager: routeManager,
-        firebaseViewModel: firebaseViewModel,
-      ),
-    );
+    // await routeManager.push<UnregisterScreen>(
+    //   context,
+    //   UnregisterScreen(
+    //     routeManager: routeManager,
+    //     firebaseViewModel: firebaseViewModel,
+    //   ),
+    // );
   }
 
   @override

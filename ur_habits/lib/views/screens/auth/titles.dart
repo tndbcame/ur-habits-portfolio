@@ -79,17 +79,17 @@ class _TitleScreenState extends ConsumerState<TitleScreen> {
         pressedColor: kTextSecondBaseColor.withAlpha(150),
         labelText: TextContents.forgotPassword.text,
         onTap: () async {
-          await _routeManager.push<String>(
-            context,
-            RePasswordScreen(
-              routeManager: _routeManager,
-              backgroundColor: kTextBaseColor,
-              appBarColor: kTextBaseColor,
-              containerColor: kLightGray5,
-              cationText: TextContents.passwordResetEmailDescription.text +
-                  TextContents.enterEmail.text,
-            ),
-          );
+          // await _routeManager.push<String>(
+          //   context,
+          //   RePasswordScreen(
+          //     routeManager: _routeManager,
+          //     backgroundColor: kTextBaseColor,
+          //     appBarColor: kTextBaseColor,
+          //     containerColor: kLightGray5,
+          //     cationText: TextContents.passwordResetEmailDescription.text +
+          //         TextContents.enterEmail.text,
+          //   ),
+          // );
         },
       ),
     );

@@ -35,7 +35,7 @@ class TabsScreen extends ConsumerStatefulWidget {
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final RouteManager _routeManager = RouteManager();
-  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
+  // final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
   late AdManager _adManager;
   bool _isLoading = false;
   int _selectPageIndex = 0;
@@ -195,45 +195,57 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   /// Body（メインコンテンツ）
   Widget _buildBody() {
-    return StreamBuilder(
-      stream: _firebaseViewModel.getSteamUser(),
-      builder: (context, snapshot) {
-        final screenWidth = MediaQuery.of(context).size.width;
-        final screenHeight = MediaQuery.of(context).size.height;
-        final statusBarHeight = MediaQuery.of(context).padding.top;
-        final availableHeight =
-            UIHelper.calcScreenSize(screenHeight, statusBarHeight);
-        if (snapshot.connectionState == ConnectionState.waiting || _isLoading) {
-          return SizedBox(
-            height: availableHeight * 0.85,
-            child: const Center(
-              child: CustomIndicator(
-                color: kTextBaseColor,
-              ),
-            ),
-          );
-        }
+    // return StreamBuilder(
+    //   stream: _firebaseViewModel.getSteamUser(),
+    //   builder: (context, snapshot) {
+    //     final screenWidth = MediaQuery.of(context).size.width;
+    //     final screenHeight = MediaQuery.of(context).size.height;
+    //     final statusBarHeight = MediaQuery.of(context).padding.top;
+    //     final availableHeight =
+    //         UIHelper.calcScreenSize(screenHeight, statusBarHeight);
+    //     if (snapshot.connectionState == ConnectionState.waiting || _isLoading) {
+    //       return SizedBox(
+    //         height: availableHeight * 0.85,
+    //         child: const Center(
+    //           child: CustomIndicator(
+    //             color: kTextBaseColor,
+    //           ),
+    //         ),
+    //       );
+    //     }
 
-        Future<bool>? usePublicHabits;
-        if (snapshot.hasData) {
-          usePublicHabits =
-              ref.read(firebaseHabitsProvider.notifier).fetchHabits();
-        }
+    //     Future<bool>? usePublicHabits;
+    //     if (snapshot.hasData) {
+    //       usePublicHabits =
+    //           ref.read(firebaseHabitsProvider.notifier).fetchHabits();
+    //     }
 
-        if (_selectPageIndex == 0) {
-          return _buildTabContent(
-              _buildHomeTab(usePublicHabits, availableHeight * 0.85),
-              screenWidth);
-        } else {
-          return _buildTabContent(
-              PartnerTab(
-                routeManager: _routeManager,
-                firebaseViewModel: _firebaseViewModel,
-              ),
-              screenWidth);
-        }
-      },
-    );
+    //     if (_selectPageIndex == 0) {
+    //       return _buildTabContent(
+    //           _buildHomeTab(usePublicHabits, availableHeight * 0.85),
+    //           screenWidth);
+    //     } else {
+    //       return _buildTabContent(
+    //           PartnerTab(
+    //             routeManager: _routeManager,
+    //             firebaseViewModel: _firebaseViewModel,
+    //           ),
+    //           screenWidth);
+    //     }
+    //   },
+    // );
+
+    //仮の処理作成
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (_selectPageIndex == 0) {
+      return _buildTabContent(
+          HomeTab(
+            routeManager: _routeManager,
+          ),
+          screenWidth);
+    } else {
+      return const Text('パートナータブは見れません');
+    }
   }
 
   /// 追加ボタン
@@ -267,12 +279,12 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   }
 
   /// ドロワー
-  Widget _buildDrawer() {
-    return AppDrawer(
-      firebaseViewModel: _firebaseViewModel,
-      routeManager: _routeManager,
-    );
-  }
+  // Widget _buildDrawer() {
+  //   return AppDrawer(
+  //     firebaseViewModel: _firebaseViewModel,
+  //     routeManager: _routeManager,
+  //   );
+  // }
 
   /// AppBar（アプリバー）
   AppBar _buildAppBar(BuildContext context) {
@@ -304,7 +316,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       key: _scaffoldKey,
       backgroundColor: kThirdBaseColor,
       appBar: _buildAppBar(context),
-      drawer: _buildDrawer(),
+      //drawer: _buildDrawer(),
       body: _buildBody(),
       bottomNavigationBar: _buildBottomNavigationBar(context),
       bottomSheet: SizedBox(

@@ -1,8 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ur_habits/firebase_options.dart';
+// import 'package:ur_habits/firebase_options.dart';
 import 'package:ur_habits/data/services/isar_accesser.dart';
 import 'package:ur_habits/data/repositories/isar_repository.dart';
 import 'package:ur_habits/utils/helper/ads/ad_helper.dart';
@@ -18,15 +18,15 @@ void main() async {
   // isarの初期化
   await IsarAccessor().initialize();
   // firebase初期化
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   // 広告の初期化
   await AdHelper.initGoogleMobileAds();
 
   //　ローカルDBの初期化処理（デバック用に作成）
   final repository = IsarRepository(isar: IsarAccessor().isar);
-  repository.clearData(isClear: false); //DB初期化するときはここをisClearをtrueにする
+  repository.clearData(isClear: true); //DB初期化するときはここをisInitをtrueにする
 
   runApp(
     const ProviderScope(

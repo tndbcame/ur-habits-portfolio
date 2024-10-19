@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -37,10 +37,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreen extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
-  final FirebaseService _firebaseServices = FirebaseService();
-  bool _isSendMail = false;
-  bool _isLoading = false;
+  // final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
+  // final FirebaseService _firebaseServices = FirebaseService();
+  final bool _isSendMail = false;
+  final bool _isLoading = false;
   String _enteredUsername = '';
   String _enteredEmail = '';
   String _enteredPassword = '';
@@ -68,15 +68,15 @@ class _LoginScreen extends State<LoginScreen> {
     ]);
   }
 
-  /// FirebaseAuthExceptionの処理
-  void _handleFirebaseAuthException(FirebaseAuthException e) {
-    if (!mounted) return;
-    String message = FirebaseAuthErrorExtension.fromCode(e.code).message;
-    DialogHelper.showCautionDialog(context, widget.routeManager, message);
-    setState(() {
-      _isLoading = false;
-    });
-  }
+  // /// FirebaseAuthExceptionの処理
+  // void _handleFirebaseAuthException(FirebaseAuthException e) {
+  //   if (!mounted) return;
+  //   String message = FirebaseAuthErrorExtension.fromCode(e.code).message;
+  //   DialogHelper.showCautionDialog(context, widget.routeManager, message);
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  // }
 
   /// キャンセル処理
   void _handleOnCansel() async {
@@ -91,79 +91,79 @@ class _LoginScreen extends State<LoginScreen> {
     }
   }
 
-  /// Firebaseでの認証処理を行う
-  Future<UserCredential?> _authenticate(
-      Future<UserCredential> Function(String, String) authMethod) async {
-    try {
-      return await authMethod(_enteredEmail, _enteredPassword);
-    } on FirebaseAuthException catch (e) {
-      _handleFirebaseAuthException(e);
-    }
-    return null;
-  }
+  // /// Firebaseでの認証処理を行う
+  // Future<UserCredential?> _authenticate(
+  //     Future<UserCredential> Function(String, String) authMethod) async {
+  //   try {
+  //     return await authMethod(_enteredEmail, _enteredPassword);
+  //   } on FirebaseAuthException catch (e) {
+  //     _handleFirebaseAuthException(e);
+  //   }
+  //   return null;
+  // }
 
-  /// フォーム送信処理を行う
-  void _submitForm() async {
-    _formKey.currentState!.save();
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      final UserCredential? userCredential = await _authenticate(
-        widget.isLogin
-            ? _firebaseServices.signInUser
-            : _firebaseServices.registerUser,
-      );
-      if (userCredential != null && userCredential.user != null) {
-        if (!widget.isLogin) {
-          await userCredential.user!.sendEmailVerification();
-          _firebaseViewModel.setUserInfo(
-              _firebaseViewModel.getUid(), _enteredUsername, _enteredEmail);
-          setState(() {
-            _isSendMail = true;
-          });
-          setState(() {
-            _isLoading = false;
-          });
-          if (!mounted) return;
-          await DialogHelper.showCautionDialog(
-              context, widget.routeManager, TextContents.emailSentSuccess.text);
-        } else {
-          if (!mounted) return;
-          await widget.routeManager.push(context, const TabsScreen());
-        }
-      }
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  // /// フォーム送信処理を行う
+  // void _submitForm() async {
+  //   _formKey.currentState!.save();
+  //   if (_formKey.currentState!.validate()) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     final UserCredential? userCredential = await _authenticate(
+  //       widget.isLogin
+  //           ? _firebaseServices.signInUser
+  //           : _firebaseServices.registerUser,
+  //     );
+  //     if (userCredential != null && userCredential.user != null) {
+  //       if (!widget.isLogin) {
+  //         await userCredential.user!.sendEmailVerification();
+  //         _firebaseViewModel.setUserInfo(
+  //             _firebaseViewModel.getUid(), _enteredUsername, _enteredEmail);
+  //         setState(() {
+  //           _isSendMail = true;
+  //         });
+  //         setState(() {
+  //           _isLoading = false;
+  //         });
+  //         if (!mounted) return;
+  //         await DialogHelper.showCautionDialog(
+  //             context, widget.routeManager, TextContents.emailSentSuccess.text);
+  //       } else {
+  //         if (!mounted) return;
+  //         await widget.routeManager.push(context, const TabsScreen());
+  //       }
+  //     }
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
-  /// メール確認処理を行う
-  void _completeEmailVerification() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final userCredential = await _authenticate(_firebaseServices.signInUser);
-    if (userCredential == null || userCredential.user == null) return;
-    final User user = userCredential.user!;
-    if (!mounted) return;
-    if (user.emailVerified) {
-      await DialogHelper.showCautionDialog(context, widget.routeManager,
-          TextContents.emailConfirmationComplete.text);
-      if (!mounted) return;
-      await widget.routeManager.push(
-        context,
-        const TabsScreen(),
-      );
-    } else {
-      await DialogHelper.showCautionDialog(
-          context, widget.routeManager, TextContents.checkEmail.text);
-    }
-    setState(() {
-      _isLoading = false;
-    });
-  }
+  // /// メール確認処理を行う
+  // void _completeEmailVerification() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   final userCredential = await _authenticate(_firebaseServices.signInUser);
+  //   if (userCredential == null || userCredential.user == null) return;
+  //   final User user = userCredential.user!;
+  //   if (!mounted) return;
+  //   if (user.emailVerified) {
+  //     await DialogHelper.showCautionDialog(context, widget.routeManager,
+  //         TextContents.emailConfirmationComplete.text);
+  //     if (!mounted) return;
+  //     await widget.routeManager.push(
+  //       context,
+  //       const TabsScreen(),
+  //     );
+  //   } else {
+  //     await DialogHelper.showCautionDialog(
+  //         context, widget.routeManager, TextContents.checkEmail.text);
+  //   }
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  // }
 
   /// 共通のSpringButtonを生成する
   Widget _buildSpringButton({
@@ -323,24 +323,26 @@ class _LoginScreen extends State<LoginScreen> {
   /// 送信ボタンを構築する
   Widget _buildActionButton() {
     return _buildSpringButton(
-      label: widget.isLogin
-          ? TextContents.login.text
-          : _isSendMail
-              ? TextContents.resendConfirmationEmail.text
-              : TextContents.sendConfirmationEmail.text,
-      buttonColor:
-          widget.isLogin ? Theme.of(context).primaryColor : kSecondBaseColor,
-      onTap: _submitForm,
-    );
+        label: widget.isLogin
+            ? TextContents.login.text
+            : _isSendMail
+                ? TextContents.resendConfirmationEmail.text
+                : TextContents.sendConfirmationEmail.text,
+        buttonColor:
+            widget.isLogin ? Theme.of(context).primaryColor : kSecondBaseColor,
+        // onTap: _submitForm,
+        onTap: () {} //仮の処理
+        );
   }
 
   /// メール確認完了ボタンを構築する
   Widget _buildVerificationButton() {
     return _buildSpringButton(
-      label: TextContents.emailConfirmed.text,
-      buttonColor: kSecondBaseColor,
-      onTap: _completeEmailVerification,
-    );
+        label: TextContents.emailConfirmed.text,
+        buttonColor: kSecondBaseColor,
+        // onTap: _completeEmailVerification,
+        onTap: () {} //仮の処理
+        );
   }
 
   @override

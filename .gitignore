@@ -1,5 +1,4 @@
 # Flutter specific rules
-**/android/*
 **/ios/*
 **/build/*
 **/.dart_tool/*
@@ -16,11 +15,7 @@
 **/linux/*
 **/*.iml
 **/.DS_Store
-**/assets/*
-**/lib/data/*
-**/lib/resources/*
-**/lib/routers/*
-**/lib/view_models/*
+
 
 # Pubspec lock file
 pubspec.lock

@@ -48,7 +48,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final RouteManager _routeManager = RouteManager();
   final OverlayManager _overlayManager = OverlayManager();
-  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
+//  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
   int _habitType = 1;
   int _selectedIconIndex = 1;
   int _accumulationType = 1;
@@ -329,7 +329,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           HabitTypeTile(
-            userStream: _firebaseViewModel.getSteamUser(),
+            //  userStream: _firebaseViewModel.getSteamUser(),
             habitType: _habitType,
             onTapHabitType: _toggleHabitType,
             showOverlayDialog: _showOverlayDialog,
