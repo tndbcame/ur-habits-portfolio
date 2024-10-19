@@ -13,6 +13,7 @@ import 'package:ur_habits/views/components/button/color_changing_text_button.dar
 import 'package:ur_habits/views/components/button/help_button.dart';
 import 'package:ur_habits/views/components/text/discription_text.dart';
 import 'package:ur_habits/views/components/text/discription_title.dart';
+import 'package:ur_habits/views/screens/setting/settings.dart';
 import 'package:ur_habits/views/screens/tabs/components/drawer/app_drawer.dart';
 import 'package:ur_habits/view_models/providers/firebase_habits_provider.dart';
 import 'package:ur_habits/view_models/providers/isar_habits_provider.dart';
@@ -316,7 +317,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       key: _scaffoldKey,
       backgroundColor: kThirdBaseColor,
       appBar: _buildAppBar(context),
-      //drawer: _buildDrawer(),
+      drawer: const SettingScreen(),
       body: _buildBody(),
       bottomNavigationBar: _buildBottomNavigationBar(context),
       bottomSheet: SizedBox(

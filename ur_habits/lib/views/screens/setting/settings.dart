@@ -288,26 +288,27 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   // /// アカウント関連のセクションをまとめた
-  // Widget _buildAccountSection() {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: Container(
-  //       decoration: BoxDecoration(
-  //         color: kLightGray3,
-  //         borderRadius: BorderRadius.circular(10),
-  //       ),
-  //       child: StreamBuilder(
-  //         stream: _firebaseViewModel.getSteamUser(),
-  //         builder: (context, snapshot) {
-  //           if (snapshot.hasData) {
-  //             return _buildUserAccountOptions();
-  //           }
-  //           return LoginTile(routeManager: _routeManager);
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _buildAccountSection() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+          decoration: BoxDecoration(
+            color: kLightGray3,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: LoginTile(routeManager: _routeManager)
+          // StreamBuilder(
+          //   stream: _firebaseViewModel.getSteamUser(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.hasData) {
+          //       return _buildUserAccountOptions();
+          //     }
+          //     return LoginTile(routeManager: _routeManager);
+          //   },
+          // ),
+          ),
+    );
+  }
 
   // /// ユーザーのアカウント関連の操作をまとめた
   // Widget _buildUserAccountOptions() {
@@ -339,7 +340,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                   _buildSectionTitle(TextContents.others.text),
                   _buildSettingsSection(),
                   _buildSectionTitle(TextContents.account.text),
-                  //_buildAccountSection(),
+                  _buildAccountSection(),
                 ],
               ),
             ),
