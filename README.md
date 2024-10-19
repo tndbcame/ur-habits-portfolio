@@ -130,8 +130,8 @@
 │   ├── mappers               // データ変換ロジック
 │   └── providers             // 状態管理を行うプロバイダー
 └── views
-├── components            // 共通UIコンポーネント
-└── screens               // 画面ごとのUI定義
+    ├── components            // 共通UIコンポーネント
+    └── screens               // 画面ごとのUI定義
 ```
 
 ## ⚪︎ ステップ数
