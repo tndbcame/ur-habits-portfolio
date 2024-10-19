@@ -280,12 +280,12 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   }
 
   /// ドロワー
-  // Widget _buildDrawer() {
-  //   return AppDrawer(
-  //     firebaseViewModel: _firebaseViewModel,
-  //     routeManager: _routeManager,
-  //   );
-  // }
+  Widget _buildDrawer() {
+    return AppDrawer(
+      //  firebaseViewModel: _firebaseViewModel,
+      routeManager: _routeManager,
+    );
+  }
 
   /// AppBar（アプリバー）
   AppBar _buildAppBar(BuildContext context) {
@@ -317,7 +317,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       key: _scaffoldKey,
       backgroundColor: kThirdBaseColor,
       appBar: _buildAppBar(context),
-      drawer: const SettingScreen(),
+      drawer: _buildDrawer(),
       body: _buildBody(),
       bottomNavigationBar: _buildBottomNavigationBar(context),
       bottomSheet: SizedBox(
