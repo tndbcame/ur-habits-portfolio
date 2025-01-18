@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:ur_habits/resources/colors.dart';
+import 'package:ur_habits/resources/data.dart';
 
 class AppDrawerPanel extends StatelessWidget {
   const AppDrawerPanel({
     super.key,
     required this.width,
-    required this.height,
     required this.title,
     this.titleColor,
     required this.widgetList,
+    this.partnerCount,
   });
 
   final double width;
-  final double height;
   final String title;
   final Color? titleColor;
   final List<Widget> widgetList;
+  final int? partnerCount;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,6 @@ class AppDrawerPanel extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         width: width,
-        height: height,
         decoration: BoxDecoration(
           color: kLightGray5,
           borderRadius: BorderRadius.circular(10),
@@ -32,13 +32,22 @@ class AppDrawerPanel extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(color: titleColor),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(fontSize: 14, color: titleColor),
+                    ),
+                    if (partnerCount != null)
+                      Text(
+                        '$partnerCount/$limitPartner',
+                        style: TextStyle(fontSize: 14, color: titleColor),
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 8,
@@ -50,7 +59,16 @@ class AppDrawerPanel extends StatelessWidget {
                 endIndent: 0,
                 color: kLightGray3,
               ),
-              ...widgetList,
+              SizedBox(
+                height: 90,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...widgetList,
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

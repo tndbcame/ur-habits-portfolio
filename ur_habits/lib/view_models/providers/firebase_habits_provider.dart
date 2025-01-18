@@ -6,33 +6,33 @@ import 'package:ur_habits/view_models/firestore_view_model.dart';
 class FirebaseHabitsNotifier extends StateNotifier<List<HabitView>> {
   FirebaseHabitsNotifier() : super([]);
 
-  //final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
+  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
 
   /// Firebaseから習慣データを取得し、stateに反映
   Future<bool> fetchHabits() async {
-    // final habits =
-    //     await _firebaseViewModel.getHabits(_firebaseViewModel.getUid());
-    // state = [...habits];
-    // _sortHabits();
+    final habits =
+        await _firebaseViewModel.getHabits(_firebaseViewModel.getUid());
+    state = [...habits];
+    _sortHabits();
     return true;
   }
 
   /// 習慣を追加
   Future<void> addHabit(HabitView habit, bool isUpdate) async {
-    // await _firebaseViewModel.addHabit(
-    //   habit,
-    //   _firebaseViewModel.getUid(),
-    //   isUpdate,
-    // );
+    await _firebaseViewModel.addHabit(
+      habit,
+      _firebaseViewModel.getUid(),
+      isUpdate,
+    );
   }
 
   /// 習慣を更新し、stateを同期
   Future<bool> updateHabit(HabitView habit) async {
-    // await _firebaseViewModel.updateHabit(
-    //   habit,
-    //   _firebaseViewModel.getUid(),
-    // );
-    // _updateHabitState(habit);
+    await _firebaseViewModel.updateHabit(
+      habit,
+      _firebaseViewModel.getUid(),
+    );
+    _updateHabitState(habit);
     return false;
   }
 
@@ -41,41 +41,41 @@ class FirebaseHabitsNotifier extends StateNotifier<List<HabitView>> {
     MapEntry<DateTime, HabitValues> entry,
     int habitId,
   ) {
-    // _updateHabitRecordState(entry, habitId);
-    // _firebaseViewModel.addHabitRecord(
-    //   entry.key,
-    //   entry.value,
-    //   _firebaseViewModel.getUid(),
-    //   habitId.toString(),
-    // );
+    _updateHabitRecordState(entry, habitId);
+    _firebaseViewModel.addHabitRecord(
+      entry.key,
+      entry.value,
+      _firebaseViewModel.getUid(),
+      habitId.toString(),
+    );
   }
 
   /// 習慣を削除
   Future<void> deleteHabit(int habitId) async {
-    // state.removeWhere((item) => item.id == habitId);
-    // await _firebaseViewModel.deleteHabit(
-    //   _firebaseViewModel.getUid(),
-    //   habitId.toString(),
-    // );
+    state.removeWhere((item) => item.id == habitId);
+    await _firebaseViewModel.deleteHabit(
+      _firebaseViewModel.getUid(),
+      habitId.toString(),
+    );
   }
 
   /// 記録を削除
   void deleteHabitRecord(int habitId, DateTime date) {
-    // state[state.indexWhere((item) => item.id == habitId)].records?.remove(date);
-    // _firebaseViewModel.deleteHabitRecord(
-    //   _firebaseViewModel.getUid(),
-    //   habitId.toString(),
-    //   date,
-    // );
+    state[state.indexWhere((item) => item.id == habitId)].records?.remove(date);
+    _firebaseViewModel.deleteHabitRecord(
+      _firebaseViewModel.getUid(),
+      habitId.toString(),
+      date,
+    );
   }
 
   /// 習慣の並び替え
   Future<void> sortHabits(List<HabitView> habits) async {
-    // _applySortingToHabits(habits);
-    // await _firebaseViewModel.updateSortOrder(
-    //   habits,
-    //   _firebaseViewModel.getUid(),
-    // );
+    _applySortingToHabits(habits);
+    await _firebaseViewModel.updateSortOrder(
+      habits,
+      _firebaseViewModel.getUid(),
+    );
   }
 
   /// 習慣の総数をカウント

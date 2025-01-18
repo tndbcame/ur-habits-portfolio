@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
-import 'package:ur_habits/views/screens/auth/titles.dart';
 
 class LoginPanel extends StatelessWidget {
   const LoginPanel({
     super.key,
-    required this.routeManager,
     required this.backgroundColor,
   });
-  final RouteManager routeManager;
+
   final Color backgroundColor;
 
   /// ログインパネル全体のコンテナを構築
@@ -71,10 +72,7 @@ class LoginPanel extends StatelessWidget {
 
   /// タイトル画面への遷移処理
   Future<void> _navigateToTitleScreen(BuildContext context) async {
-    await routeManager.push<TitleScreen>(
-      context,
-      const TitleScreen(),
-    );
+    await context.push(RouterEnums.title.paths, extra: TitlesData());
   }
 
   @override

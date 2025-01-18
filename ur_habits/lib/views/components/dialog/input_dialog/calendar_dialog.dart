@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
 import 'package:ur_habits/views/components/calender/calender_page_view.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 
 class CalendarDialog extends StatelessWidget {
   const CalendarDialog({
     super.key,
     this.selectedDate,
-    required this.routeManager,
   });
   final DateTime? selectedDate;
-  final RouteManager routeManager;
 
   /// ダイアログのタイトル部分を作成する
   Widget _buildDialogTitle() {
@@ -28,7 +27,7 @@ class CalendarDialog extends StatelessWidget {
   }
 
   /// カレンダービューを作成する
-  Widget _buildCalendar(BuildContext context) {
+  Widget _buildCalendar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CalenderPageView(
@@ -40,7 +39,7 @@ class CalendarDialog extends StatelessWidget {
         useAsInput: true,
         useAsDialog: true,
         onDaySelected: (context, selectedDay) {
-          routeManager.pop<DateTime>(context, selectedDay);
+          context.pop<DateTime>(selectedDay);
         },
         selectedDate: selectedDate,
       ),
@@ -55,11 +54,11 @@ class CalendarDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
-      child: SingleChildScrollView(
+      child: UrHabitsScrollView(
         child: Column(
           children: [
             _buildDialogTitle(),
-            _buildCalendar(context),
+            _buildCalendar(),
           ],
         ),
       ),

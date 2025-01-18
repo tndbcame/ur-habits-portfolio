@@ -7,7 +7,6 @@ class AdHelper {
   static Future<InitializationStatus> initGoogleMobileAds() {
     return MobileAds.instance.initialize();
   }
-  //TODO ここはテスト用のIDだから本番用に切り替える
 
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {

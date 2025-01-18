@@ -29,6 +29,7 @@ const kLightGreen = Color.fromARGB(255, 119, 235, 91);
 const kDarkGreen = Color.fromARGB(255, 31, 112, 50);
 const kYellow = Color.fromRGBO(244, 222, 30, 1);
 const kYellow2 = Color.fromRGBO(248, 244, 209, 1);
+const kYellow3 = Color.fromRGBO(207, 201, 143, 1);
 const kSaturday = Color.fromRGBO(195, 219, 242, 1);
 const kSaturday2 = Color(0xFF779ed9);
 const kOnTapSaturday = Color.fromRGBO(97, 165, 229, 1);

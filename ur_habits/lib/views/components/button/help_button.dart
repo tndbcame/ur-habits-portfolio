@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/utils/ui/ui_helper.dart';
+import 'package:ur_habits/utils/ui/helpers/ui_helper.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 
 class HelpButton extends StatelessWidget {

@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/data.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/utils/helper/dialog_helper.dart';
+import 'package:ur_habits/utils/ui/helpers/bottom_sheet_helper.dart';
+import 'package:ur_habits/utils/ui/helpers/dialog_helper.dart';
+import 'package:ur_habits/utils/ui/ui_trimmer.dart';
 import 'package:ur_habits/view_models/providers/firebase_habits_provider.dart';
-import 'package:ur_habits/utils/helper/ads/ad_manager.dart';
+import 'package:ur_habits/utils/ads/ad_manager.dart';
+import 'package:ur_habits/views/components/bottom_sheet/checkbox_bottom_sheet.dart';
+import 'package:ur_habits/views/components/bottom_sheet/counter_bottom_sheet.dart';
+import 'package:ur_habits/views/components/bottom_sheet/number_bottom_sheet.dart';
+import 'package:ur_habits/views/components/bottom_sheet/star_bottom_sheet.dart';
+import 'package:ur_habits/views/components/bottom_sheet/time_bottom_sheet.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
+import 'package:ur_habits/views/components/button/custom_action_button.dart';
 import 'package:ur_habits/views/components/button/help_button.dart';
 import 'package:ur_habits/views/components/calender/calender_page_view.dart';
 import 'package:ur_habits/views/components/dialog/caution_dialog/overlay/overlay_manager.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 import 'package:ur_habits/views/components/text/discription_text.dart';
 import 'package:ur_habits/views/components/text/discription_title.dart';
 import 'package:ur_habits/views/screens/habit_record/components/panel/habit_record_memo_panel.dart';
 import 'package:ur_habits/views/screens/habit_record/components/section/habit_record_goal_section.dart';
 import 'package:ur_habits/views/screens/habit_record/components/section/habit_record_section.dart';
 import 'package:ur_habits/views/screens/habit_record/components/tile/habit_record_list_tile.dart';
-import 'package:ur_habits/views/components/dialog/input_dialog/checkbox_dialog.dart';
-import 'package:ur_habits/views/components/dialog/input_dialog/counter_dialog.dart';
-import 'package:ur_habits/views/components/dialog/input_dialog/number_field_dialog.dart';
-import 'package:ur_habits/utils/habit_converter.dart';
+import 'package:ur_habits/utils/habit_values_converter.dart';
 import 'package:ur_habits/data/models/ui/habit_values.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/views/screens/habit_record/components/toggle/record_toggle.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/views/screens/habit_record/components/graph/achievement_rate_calculator.dart';
@@ -34,11 +40,11 @@ class HabitRecordScreen extends ConsumerStatefulWidget {
   const HabitRecordScreen({
     super.key,
     required this.habit,
-    required this.popLabel,
+    required this.ishome,
     this.readOnly = false,
   });
   final HabitView habit;
-  final IconData popLabel;
+  final bool ishome;
   final bool readOnly;
 
   @override
@@ -49,7 +55,6 @@ class HabitRecordScreen extends ConsumerStatefulWidget {
 
 class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
     with TickerProviderStateMixin {
-  final RouteManager _routeManager = RouteManager();
   final DateTime _now = DateTime.now();
   final HabitRecordHelper _habitRecordHelper = HabitRecordHelper();
   final OverlayManager _overlayManager = OverlayManager();
@@ -94,11 +99,11 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
     _calculateAchievementRate();
     _adManager = AdManager();
     _adManager
-        .loadBannerAd(widget.readOnly ? AdSize.fullBanner : AdSize.banner);
+        .loadBannerAd(widget.readOnly ? AdSize.largeBanner : AdSize.banner);
   }
 
   Future<void> _showDescriptionDialog() async {
-    await DialogHelper.showDescriptionDialog(context, _routeManager, [
+    await DialogHelper.showDescriptionDialog(context, [
       DiscriptionTitle(title: TextContents.calendar.text),
       DiscriptionText(text: TextContents.habitManagementByMonth.text),
       DiscriptionTitle(title: TextContents.goalAchieved.text),
@@ -220,24 +225,20 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
   /// 数値またはチェックボックスの入力を処理
   Future<MapEntry<DateTime, HabitValues>?> _handleNumberOrCheckboxInput(
       BuildContext context, DateTime date) async {
-    var result = await _routeManager.showAnimationDialog<(String, DateTime?)>(
+    var result = await BottomSheetHelper.showBottomSheet<(String, DateTime?)>(
       context,
       _habit.dataType.id == 6
-          ? CheckboxDialog(
-              routeManager: _routeManager,
-              dialogTitle: _habit.dataType.name,
+          ? CheckboxBottomSheet(
               values: _habit.records,
               onDelete: _deleteRecord,
               date: date,
             )
-          : NumberFiledDialog(
-              routeManager: _routeManager,
-              dataType: _habit.dataType,
-              values: HabitConverter.toStrMap(_habit.records!),
+          : NumberBottomSheet(
+              values: HabitValuesConverter.toStrMap(_habit.records!),
               onDelete: _deleteRecord,
               date: date,
+              useDecimal: _habit.dataType.id == 2,
             ),
-      animaType: _habit.dataType.id == 6 ? 1 : 2,
     );
 
     if (result != null) {
@@ -250,12 +251,13 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
   /// 星の評価を選択するための入力処理
   Future<MapEntry<DateTime, HabitValues>?> _handleStarPickerInput(
       BuildContext context, DateTime date) async {
-    var result = await _routeManager.showStarPicker(
+    var result = await BottomSheetHelper.showBottomSheet(
       context,
-      _habit.dataType,
-      values: HabitConverter.toStrMap(_habit.records!),
-      onDelete: _deleteRecord,
-      date: date,
+      StarBottomSheet(
+        values: HabitValuesConverter.toStrMap(_habit.records!),
+        onDelete: _deleteRecord,
+        date: date,
+      ),
     );
 
     if (result != null) {
@@ -268,11 +270,10 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
   /// カウンター入力の処理
   Future<MapEntry<DateTime, HabitValues>?> _handleCounterInput(
       BuildContext context, DateTime date) async {
-    var result = await _routeManager.showAnimationDialog<(String, DateTime?)>(
+    var result = await BottomSheetHelper.showBottomSheet<(String, DateTime?)>(
       context,
-      CounterDialog(
-        routeManager: _routeManager,
-        values: HabitConverter.toStrMap(_habit.records!),
+      CounterBottomSheet(
+        values: HabitValuesConverter.toStrMap(_habit.records!),
         onDelete: _deleteRecord,
         date: date,
       ),
@@ -288,18 +289,22 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
   /// 時間ピッカー入力の処理
   Future<MapEntry<DateTime, HabitValues>?> _handleTimePickerInput(
       BuildContext context, DateTime date) async {
-    var result = await _routeManager.showTimePicker(
-      context,
-      _habit.dataType,
-      _habit.accumulationType,
-      values: HabitConverter.toDurMap(_habit.records!),
-      onDelete: _deleteRecord,
-      date: date,
-    );
+    var result = await BottomSheetHelper.showBottomSheet(
+        context,
+        TimeBottomSheet(
+          unit: _habit.dataType.unit,
+          hourSize: _habit.accumulationType == 1 ? 1000 : 24,
+          isSecond: _habit.dataType.id == 4,
+          values: HabitValuesConverter.toDurMap(_habit.records!),
+          onDelete: _deleteRecord,
+          date: date,
+        ));
 
     if (result != null) {
-      if (result.$3 != null) date = result.$3!;
-      return _habitRecordHelper.createRecord(date, result.$2, result.$1);
+      String displayValue = UITrimmer.formatTime(result.$1,
+          includeSeconds: _habit.dataType.id == 4);
+      if (result.$2 != null) date = result.$2!;
+      return _habitRecordHelper.createRecord(date, displayValue, result.$1);
     }
     return null;
   }
@@ -381,16 +386,19 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: kThirdBaseColor,
       appBar: AppBar(
         leadingWidth: 50,
         leading: ColorChangingTextButton(
           leftIcon: HugeIcons.strokeRoundedArrowLeft01,
-          rightIcon: widget.popLabel,
+          rightIcon: widget.ishome
+              ? HugeIcons.strokeRoundedHome03
+              : HugeIcons.strokeRoundedUserMultiple,
           isBoldText: false,
           normalColor: kTextBaseColor,
           pressedColor: kTextBaseColorBlack,
-          onTap: () => _routeManager.pop(context),
+          onTap: () => context.pop(),
         ),
         title: Text(
           _habitTitle,
@@ -405,7 +413,7 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
       ),
       body: Stack(
         children: [
-          SingleChildScrollView(
+          UrHabitsScrollView(
             child: Column(
               children: [
                 _buildGoalTitle(),
@@ -458,31 +466,30 @@ class _HabitRecordScreen extends ConsumerState<HabitRecordScreen>
               ],
             ),
           ),
-          if (!widget.readOnly)
-            Positioned(
-              right: widget.readOnly ? null : -20,
-              bottom: 0,
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(0, 0, 14, 16),
-                padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                width: _adManager.bannerAdWidth,
-                height: _adManager.bannerAdHeight,
-                child: _adManager.getBannerAdWidget(),
-              ),
-            ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: SafeArea(
+                child: SizedBox(
+                  width: _adManager.bannerAdWidth,
+                  height: _adManager.bannerAdHeight,
+                  child: _adManager.getBannerAdWidget(),
+                ),
+              )),
         ],
       ),
-      floatingActionButtonLocation:
-          widget.readOnly ? null : FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: widget.readOnly
+          ? null
+          : CustomActionButton(
+              FloatingActionButtonLocation.miniStartFloat, 0, -50),
       floatingActionButton:
           widget.readOnly ? null : _buildFloatingActionButton(),
-      bottomSheet: widget.readOnly
-          ? SizedBox(
-              width: _adManager.bannerAdWidth,
-              height: _adManager.bannerAdHeight,
-              child: _adManager.getBannerAdWidget(),
-            )
-          : null,
+      // bottomSheet: SafeArea(
+      //   child: SizedBox(
+      //     width: _adManager.bannerAdWidth,
+      //     height: _adManager.bannerAdHeight,
+      //     child: _adManager.getBannerAdWidget(),
+      //   ),
+      // )
     );
   }
 }

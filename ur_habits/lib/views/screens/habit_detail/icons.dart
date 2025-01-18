@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
 import 'package:ur_habits/views/components/button/color_changing_box_button.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/resources/data.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 
 class IconsScreen extends StatelessWidget {
   const IconsScreen({
     super.key,
-    required this.routeManager,
     required this.iconId,
   });
 
   final int iconId;
-  final RouteManager routeManager;
 
   /// キャンセルボタンが押された時の処理
   void _onCancelPressed(BuildContext context) {
-    routeManager.pop(context);
+    context.pop();
   }
 
   /// アイコンが選択された時の処理
   void _onIconSelected(BuildContext context, int iconKey) {
-    routeManager.pop<int>(context, iconKey);
+    context.pop<int>(iconKey);
   }
 
   /// アップバー

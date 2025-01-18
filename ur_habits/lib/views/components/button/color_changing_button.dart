@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ur_habits/resources/colors.dart';
+import 'package:ur_habits/resources/extension/color_extension.dart';
 
 class ColorChangingButton extends StatefulWidget {
   const ColorChangingButton({
@@ -54,7 +55,7 @@ class _ColorChangingButtonState extends State<ColorChangingButton> {
             height: 30,
             width: 30,
             decoration: BoxDecoration(
-              color: kTextBaseColor.withOpacity(0),
+              color: kTextBaseColor.applyOpacity(0),
               borderRadius: BorderRadius.circular(100),
               border: Border.all(color: kTextBaseColor, width: 2),
             ),

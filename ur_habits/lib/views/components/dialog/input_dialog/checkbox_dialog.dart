@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/data/models/ui/habit_values.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
@@ -6,18 +7,16 @@ import 'package:ur_habits/views/components/button/spring_button.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/button/input_dialog_button.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/tile/input_dialog_tile.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 
 class CheckboxDialog extends StatefulWidget {
   const CheckboxDialog({
     super.key,
-    required this.routeManager,
     required this.dialogTitle,
     this.values,
     this.onDelete,
     this.date,
   });
-  final RouteManager routeManager;
+
   final String dialogTitle;
   final Map<DateTime, HabitValues>? values;
   final void Function(
@@ -133,15 +132,13 @@ class _CheckboxDialog extends State<CheckboxDialog> {
   @override
   Widget build(BuildContext context) {
     return InputDialogTile(
-      routeManager: widget.routeManager,
       mainAxisAlignment: MainAxisAlignment.center,
       dialogTitle: widget.dialogTitle,
       mainItems: _buildMainItems(),
       subItem: InputDialogButton(
-        routeManager: widget.routeManager,
         onOkPressed: () {
-          widget.routeManager.pop<(String, DateTime?)>(
-              context, (_selectedValue.toString(), _selectedDate));
+          context.pop<(String, DateTime?)>(
+              (_selectedValue.toString(), _selectedDate));
         },
         buttonColor: Theme.of(context).primaryColor,
       ),

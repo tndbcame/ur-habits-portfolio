@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/utils/helper/dialog_helper.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
+import 'package:ur_habits/utils/ui/helpers/dialog_helper.dart';
 import 'package:ur_habits/utils/ui/validators/habit_validator.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/views/components/button/help_button.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 import 'package:ur_habits/views/components/text/discription_text.dart';
 import 'package:ur_habits/views/components/text/discription_title.dart';
 import 'package:ur_habits/views/screens/habit_detail/components/form/habit_detail_text_form.dart';
 import 'package:ur_habits/utils/ui/ui_trimmer.dart';
 import 'package:ur_habits/data/models/ui/habit_values.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/data/models/ui/data_type.dart';
 import 'package:ur_habits/data/models/ui/habit_goal_view.dart';
 import 'package:ur_habits/views/screens/habit_detail/components/tile/goal_detail/deadline_tile.dart';
@@ -18,20 +22,17 @@ import 'package:ur_habits/views/screens/habit_detail/components/tile/goal_detail
 import 'package:ur_habits/views/screens/habit_detail/components/tile/goal_detail/input_value_tile.dart';
 import 'package:ur_habits/views/screens/habit_detail/components/tile/goal_detail/memo_tile.dart';
 import 'package:ur_habits/views/screens/habit_detail/components/tile/title_tile.dart';
-import 'package:ur_habits/views/screens/habit_detail/deadlines.dart';
 import 'package:ur_habits/resources/colors.dart';
 
 class GoalDetailsScreen extends StatefulWidget {
   const GoalDetailsScreen({
     super.key,
-    required this.routeManager,
     required this.selectedDataType,
     required this.accumulationType,
     required this.isUpdate,
     this.habitGoal,
   });
 
-  final RouteManager routeManager;
   final DataType selectedDataType;
   final int accumulationType;
   final bool isUpdate;
@@ -100,7 +101,7 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
   }
 
   Future<void> _showDescriptionDialog() async {
-    await DialogHelper.showDescriptionDialog(context, widget.routeManager, [
+    await DialogHelper.showDescriptionDialog(context, [
       DiscriptionTitle(title: TextContents.title.text),
       DiscriptionText(text: TextContents.enterGoalTitle.text),
       DiscriptionTitle(title: TextContents.goalValue.text),
@@ -113,8 +114,6 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
       DiscriptionText(text: TextContents.enterDeadline.text),
       DiscriptionTitle(title: TextContents.note.text),
       DiscriptionText(text: TextContents.enterMemo.text),
-      const SizedBox(height: 20),
-      DiscriptionText(text: TextContents.requiredFieldsNote.text),
     ]);
   }
 
@@ -130,12 +129,9 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
 
   /// 締め切り設定の処理
   Future<void> _setDeadline() async {
-    final newDeadline = await widget.routeManager.push<DateTime>(
-      context,
-      DeadlineScreen(
-        routeManager: widget.routeManager,
-        selectedDate: _selectedDeadline,
-      ),
+    final newDeadline = await context.push<DateTime?>(
+      RouterEnums.deadline.paths,
+      extra: DeadlinesData(selectedDate: _selectedDeadline),
     );
     if (newDeadline == null) return;
 
@@ -149,17 +145,15 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
     if (_formKey.currentState!.validate()) {
       DateTime now = DateTime.now();
       DateTime nowDate = DateTime(now.year, now.month, now.day);
-      widget.routeManager.pop<HabitGoalView>(
-          context,
-          HabitGoalView(
-            title: _enteredTitle,
-            incDecTyep: _selectedIncDecVal,
-            currentValues: _enteredCurrentVal,
-            targetValues: _enteredTargetVal,
-            inputedDate: nowDate,
-            deadline: _selectedDeadline,
-            memo: _enteredMemo,
-          ));
+      context.pop<HabitGoalView>(HabitGoalView(
+        title: _enteredTitle,
+        incDecTyep: _selectedIncDecVal,
+        currentValues: _enteredCurrentVal,
+        targetValues: _enteredTargetVal,
+        inputedDate: nowDate,
+        deadline: _selectedDeadline,
+        memo: _enteredMemo,
+      ));
     }
   }
 
@@ -206,7 +200,7 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
         TextContents.goal.text,
         style: const TextStyle(
           color: kTextThirdBaseColor,
-          fontSize: 20,
+          fontSize: 18,
         ),
       ),
       centerTitle: true,
@@ -230,7 +224,7 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
       isBoldText: false,
       normalColor: kTextBaseColorBlack,
       pressedColor: kTextBaseColorBlack.withAlpha(150),
-      onTap: () => widget.routeManager.pop(context),
+      onTap: () => context.pop(),
     );
   }
 
@@ -311,7 +305,7 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
       hintText: TextContents.zero.text,
       readOnly: true,
       onTap: () async {
-        final result = await widget.routeManager.showStarPicker(
+        final result = await DialogHelper.showStarPicker(
           context,
           selectedDataType,
           initialValue:
@@ -343,7 +337,7 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
           : TextContents.shortTimeZero.text,
       readOnly: true,
       onTap: () async {
-        final result = await widget.routeManager.showTimePicker(
+        final result = await DialogHelper.showTimePicker(
           context,
           selectedDataType,
           widget.accumulationType,
@@ -389,7 +383,7 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
         color: kTextBaseColor,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: SingleChildScrollView(
+      child: UrHabitsScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -408,7 +402,6 @@ class _GoalDetailsScreen extends State<GoalDetailsScreen> {
                 selectedDataType: widget.selectedDataType,
                 isTarget: true,
               ),
-              isRequiredMark: true,
             ),
             if (!widget.isUpdate)
               IncDecTypeTile(

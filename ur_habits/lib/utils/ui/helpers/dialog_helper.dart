@@ -1,35 +1,78 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ur_habits/data/models/ui/data_type.dart';
+import 'package:ur_habits/resources/colors.dart';
+import 'package:ur_habits/resources/extension/color_extension.dart';
+import 'package:ur_habits/utils/ui/ui_trimmer.dart';
+import 'package:ur_habits/views/components/dialog/caution_dialog/caution_dialog.dart';
+import 'package:ur_habits/views/components/dialog/caution_dialog/selecting_caution_dialog.dart';
+import 'package:ur_habits/views/components/dialog/description_dialog.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/star_dialog.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/time_dialog.dart';
-import 'package:ur_habits/utils/ui/ui_trimmer.dart';
-import 'package:ur_habits/data/models/ui/data_type.dart';
-import 'package:ur_habits/views/screens/tutorial/ur_habtis_tutorials.dart';
 
-/// ルート管理を行うクラス
-class RouteManager {
-  /// ページをポップする
-  Future<void> pop<T extends Object?>(BuildContext context, [T? result]) async {
-    Navigator.of(context).pop(result);
-  }
-
-  /// 新しいページをプッシュする
-  Future<T?> push<T extends Object?>(BuildContext context, Widget screen) {
-    return Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => screen),
-    );
-  }
-
+class DialogHelper {
   /// ダイアログを表示する
-  Future<T?> showDialogs<T>(BuildContext context, Widget dialog) {
+  static Future<T?> showDialogs<T>(BuildContext context, Widget dialog) {
     return showDialog(
       context: context,
       builder: (BuildContext context) => dialog,
     );
   }
 
+  /// ユーザーに選択を求めるダイアログを表示
+  static Future<bool?> showSelectDialog(
+    BuildContext context,
+    String message,
+    String buttonText,
+    Color color,
+  ) async {
+    return await showAnimationDialog<bool>(
+      context,
+      SelectingCautionDialog(
+        message: message,
+        messageFontSize: 16,
+        confirmButtonColor: color,
+        confirmButtonText: buttonText,
+      ),
+      animaType: 1,
+    );
+  }
+
+  /// 警告ダイアログを表示する
+  static Future<void> showCautionDialog(
+    BuildContext context,
+    String message,
+  ) async {
+    await showAnimationDialog(
+      context,
+      CautionDialog(
+        message: message,
+        messageFontSize: 16,
+        confirmButtonColor: Theme.of(context).primaryColor,
+        onConfirm: () {
+          context.pop();
+        },
+      ),
+      animaType: 1,
+    );
+  }
+
+  /// 警告ダイアログを表示する
+  static Future<void> showDescriptionDialog(
+    BuildContext context,
+    List<Widget> messages,
+  ) async {
+    await showAnimationDialog(
+      context,
+      DescriptionDialog(
+        messages: messages,
+      ),
+      animaType: 1,
+    );
+  }
+
   /// アニメーションをしてダイアログを表示する
-  Future<T?> showAnimationDialog<T>(
+  static Future<T?> showAnimationDialog<T>(
     BuildContext context,
     Widget dialog, {
     int animaType = 1,
@@ -37,7 +80,7 @@ class RouteManager {
     if (animaType == 1) {
       // 拡大しながらダイアログを表示させる
       return showGeneralDialog(
-          barrierColor: Colors.black.withOpacity(0.5),
+          barrierColor: kTextBaseColorBlack.applyOpacity(0.5),
           transitionBuilder: (context, a1, a2, widget) {
             return Transform.scale(
               scale: a1.value,
@@ -52,7 +95,7 @@ class RouteManager {
     } else if (animaType == 2) {
       return showGeneralDialog(
         // 下に動きながらダイアログを表示させる
-        barrierColor: Colors.black.withOpacity(0.5),
+        barrierColor: kTextBaseColorBlack.applyOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
           final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
           return Transform(
@@ -70,7 +113,7 @@ class RouteManager {
       );
     } else {
       return showGeneralDialog(
-          barrierColor: Colors.black.withOpacity(0.5),
+          barrierColor: kTextBaseColorBlack.applyOpacity(0.5),
           transitionBuilder: (context, a1, a2, widget) {
             return FadeTransition(
                 opacity: CurvedAnimation(parent: a1, curve: Curves.easeIn),
@@ -85,7 +128,7 @@ class RouteManager {
   }
 
   /// 時間入力ダイアログを表示する
-  Future<(Duration, String, DateTime?)?> showTimePicker(
+  static Future<(Duration, String, DateTime?)?> showTimePicker(
     BuildContext context,
     DataType dataType,
     int accumulationType, {
@@ -103,7 +146,6 @@ class RouteManager {
         await showAnimationDialog<(Duration, DateTime?)>(
       context,
       TimeDialog(
-        routeManager: RouteManager(),
         dialogTitle: dataType.name,
         unit: dataType.unit,
         hourSize: accumulationType == 1 ? 1000 : 24,
@@ -122,7 +164,7 @@ class RouteManager {
   }
 
   /// スター入力ダイアログを表示する
-  Future<(String, DateTime?)?> showStarPicker(
+  static Future<(String, DateTime?)?> showStarPicker(
     BuildContext context,
     DataType dataType, {
     Map<DateTime, String>? values,
@@ -143,7 +185,6 @@ class RouteManager {
         await showAnimationDialog<(String, DateTime?)>(
       context,
       StarDialog(
-        routeManager: RouteManager(),
         dialogTitle: dataType.name,
         values: values,
         val: initVal,
@@ -154,18 +195,8 @@ class RouteManager {
     return result;
   }
 
-  /// チュートリアルを表示する
-  Future<void> showTutorial(BuildContext context) async {
-    await push(
-      context,
-      UrHabitsTutorialScreen(
-        routeManager: RouteManager(),
-      ),
-    );
-  }
-
   /// キーボードを隠す
-  void _hideKeyboard(BuildContext context) {
+  static void _hideKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 }

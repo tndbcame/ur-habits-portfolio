@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
+import 'package:ur_habits/utils/ui/helpers/dialog_helper.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/views/components/dialog/caution_dialog/selecting_caution_dialog.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/calendar_dialog.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/resources/data.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 
 class InputDialogTile extends StatelessWidget {
   const InputDialogTile({
     super.key,
-    required this.routeManager,
     required this.mainAxisAlignment,
     required this.dialogTitle,
     required this.mainItems,
@@ -26,7 +26,7 @@ class InputDialogTile extends StatelessWidget {
     this.onChangeDateForTime,
     this.animeType = 1,
   });
-  final RouteManager routeManager;
+
   final MainAxisAlignment mainAxisAlignment;
   final String dialogTitle;
   final List<Widget> mainItems;
@@ -42,10 +42,9 @@ class InputDialogTile extends StatelessWidget {
 
   /// 日付選択用のダイアログを表示する
   Future<void> _showDatePickerDialog(BuildContext context) async {
-    DateTime? selectedDate = await routeManager.showAnimationDialog<DateTime>(
+    DateTime? selectedDate = await DialogHelper.showAnimationDialog<DateTime>(
       context,
       CalendarDialog(
-        routeManager: routeManager,
         selectedDate: date,
       ),
       animaType: animeType,
@@ -61,10 +60,9 @@ class InputDialogTile extends StatelessWidget {
 
   /// 削除確認ダイアログを表示する
   Future<void> _showDeleteDialog(BuildContext context) async {
-    bool? isDelete = await routeManager.showAnimationDialog(
+    bool? isDelete = await DialogHelper.showAnimationDialog(
       context,
       SelectingCautionDialog(
-        routeManager: routeManager,
         message: TextContents.confirmDelete.text,
         confirmButtonText: TextContents.delete.text,
         confirmButtonColor: kSecondBaseColor,
@@ -73,7 +71,7 @@ class InputDialogTile extends StatelessWidget {
     );
     if (isDelete == true && context.mounted) {
       onDelete!(context, date!);
-      routeManager.pop(context);
+      context.pop();
     }
   }
 
@@ -129,7 +127,7 @@ class InputDialogTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '$dialogTitle...',
+                      dialogTitle,
                       style: const TextStyle(color: kDialogTextColor),
                     ),
                     if (date != null)

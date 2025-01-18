@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:ur_habits/utils/helper/ads/ad_helper.dart';
+import 'package:ur_habits/utils/ads/ad_helper.dart';
 
 class AdManager {
   BannerAd? _bannerAd;

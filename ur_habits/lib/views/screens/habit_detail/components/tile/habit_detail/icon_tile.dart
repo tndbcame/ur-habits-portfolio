@@ -19,7 +19,6 @@ class IconTile extends StatelessWidget {
     return HabitDetailListTile(
       title: TextContents.icon.text,
       itemHeight: 80,
-      isRequiredMark: true,
       onTap: onTapIcon,
       mainItem: Expanded(
         child: Icon(

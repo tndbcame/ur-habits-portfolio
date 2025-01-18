@@ -21,6 +21,7 @@ class OverlayDialog extends StatelessWidget {
       child: FadeTransition(
         opacity: animatoin,
         child: Material(
+          color: Colors.transparent,
           child: Container(
             height: 200,
             width: 200,

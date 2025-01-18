@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
 import 'package:ur_habits/views/components/button/color_changing_box_button.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/controller/time_dialog_controller.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/tile/input_dialog_tile.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 
 class TimeDialog extends StatefulWidget {
   const TimeDialog({
     super.key,
-    required this.routeManager,
     required this.dialogTitle,
     required this.unit,
     required this.hourSize,
@@ -21,7 +20,7 @@ class TimeDialog extends StatefulWidget {
     this.onDelete,
     this.date,
   });
-  final RouteManager routeManager;
+
   final String dialogTitle;
   final String unit;
   final int hourSize;
@@ -229,15 +228,13 @@ class _TimeDialogState extends State<TimeDialog> {
     return [
       _buildTextButton(() => _controller.setTime(DateTime(0)),
           TextContents.clear.text, false),
-      _buildTextButton(() => widget.routeManager.pop(context),
-          TextContents.cancel.text, true),
+      _buildTextButton(() => context.pop(), TextContents.cancel.text, true),
       _buildTextButton(() => _handleOkButton(), TextContents.ok.text, true),
     ];
   }
 
   void _handleOkButton() {
-    widget.routeManager.pop<(Duration, DateTime?)>(
-      context,
+    context.pop<(Duration, DateTime?)>(
       (
         Duration(
           hours: _selectedHour,
@@ -260,7 +257,7 @@ class _TimeDialogState extends State<TimeDialog> {
       width: 90,
       height: 150,
       child: CupertinoPicker(
-        backgroundColor: Colors.white,
+        backgroundColor: kTextBaseColor,
         selectionOverlay: const CupertinoPickerDefaultSelectionOverlay(
           background: Colors.transparent,
         ),
@@ -319,7 +316,6 @@ class _TimeDialogState extends State<TimeDialog> {
   @override
   Widget build(BuildContext context) {
     return InputDialogTile(
-      routeManager: widget.routeManager,
       mainAxisAlignment: MainAxisAlignment.center,
       dialogTitle: widget.dialogTitle,
       mainItems: _buildMainItems(),

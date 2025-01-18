@@ -8,6 +8,7 @@ class ColorChangingTextButton extends StatefulWidget {
     required this.onTap,
     this.isBoldText = false,
     this.leftIcon,
+    this.leftIconSize,
     this.labelText,
     this.textSize,
     this.rightIcon,
@@ -19,6 +20,7 @@ class ColorChangingTextButton extends StatefulWidget {
   final VoidCallback onTap;
   final bool isBoldText;
   final IconData? leftIcon;
+  final double? leftIconSize;
   final String? labelText;
   final double? textSize;
   final IconData? rightIcon;
@@ -70,6 +72,7 @@ class _ColorChangingTextButtonState extends State<ColorChangingTextButton> {
             Icon(
               widget.leftIcon,
               color: currentColor,
+              size: widget.leftIconSize,
             ),
           if (widget.labelText != null)
             Text(

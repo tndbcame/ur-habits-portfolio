@@ -30,11 +30,11 @@ class UITrimmer {
     // 小数点の前に数字がない場合、TextContents.zero.textを追加
     value = _ensureLeadingZero(value);
 
-    // 小数点の後に数字がない場合、TextContents.zero.textを追加
-    value = _ensureTrailingZero(value);
-
     // 小数点の後の不要なゼロを削除
     value = _trimTrailingZeros(value);
+
+    // 小数点の後に数字がない場合、TextContents.zero.textを追加
+    value = _ensureTrailingZero(value);
 
     return value;
   }
@@ -94,7 +94,7 @@ class UITrimmer {
   /// メールアドレスの表示を短くする
   static String shortenEmail(String email) {
     if (email.length >= 30) {
-      return "${email.substring(0, 26)}...";
+      return email.substring(0, 26);
     }
     return email;
   }

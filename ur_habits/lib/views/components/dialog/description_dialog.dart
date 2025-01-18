@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 
 class DescriptionDialog extends StatelessWidget {
   const DescriptionDialog({
     super.key,
-    required this.routeManager,
     required this.messages,
   });
-  final RouteManager routeManager;
+
   final List<Widget> messages;
 
   @override
@@ -39,7 +39,7 @@ class DescriptionDialog extends StatelessWidget {
                     normalColor: kTextBaseColorBlack,
                     pressedColor: kTextBaseColorBlack.withAlpha(150),
                     onTap: () {
-                      routeManager.pop(context);
+                      context.pop();
                     },
                   ),
                 ),
@@ -47,7 +47,7 @@ class DescriptionDialog extends StatelessWidget {
             ),
             SizedBox(
               height: 500,
-              child: SingleChildScrollView(
+              child: UrHabitsScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,

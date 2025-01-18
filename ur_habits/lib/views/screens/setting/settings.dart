@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/data.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/utils/helper/dialog_helper.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
+import 'package:ur_habits/utils/ui/helpers/dialog_helper.dart';
 import 'package:ur_habits/view_models/providers/theme_provider.dart';
 import 'package:ur_habits/view_models/firestore_view_model.dart';
 import 'package:ur_habits/views/components/Indicator/custom_indicator.dart';
 import 'package:ur_habits/views/components/button/color_changing_button.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/views/components/button/help_button.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 import 'package:ur_habits/views/components/text/discription_text.dart';
 import 'package:ur_habits/views/components/text/discription_title.dart';
 import 'package:ur_habits/views/components/tile/auth_list_tile.dart';
-import 'package:ur_habits/views/screens/auth/re_names.dart';
 import 'package:ur_habits/views/screens/setting/components/tile/change_password_tile.dart';
 import 'package:ur_habits/views/screens/setting/components/tile/change_username_tile.dart';
 import 'package:ur_habits/views/screens/setting/components/tile/login_tile.dart';
@@ -33,8 +36,7 @@ class SettingScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingScreenState extends ConsumerState<SettingScreen> {
-  final RouteManager _routeManager = RouteManager();
-//  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
+  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
   bool isLoading = false;
   String? selectedColor;
 
@@ -47,7 +49,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   Future<void> _showDescriptionDialog() async {
-    await DialogHelper.showDescriptionDialog(context, _routeManager, [
+    await DialogHelper.showDescriptionDialog(context, [
       DiscriptionTitle(title: TextContents.theme.text),
       DiscriptionText(text: TextContents.changeThemeColor.text),
       DiscriptionTitle(title: TextContents.privacyPolicy.text),
@@ -96,57 +98,53 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
 
   /// ユーザー名変更時の処理を行う
   Future<void> _handleChangeUsername() async {
-    // String currentName =
-    //     await _firebaseViewModel.getUsername(_firebaseViewModel.getUid());
+    String currentName =
+        await _firebaseViewModel.getUsername(_firebaseViewModel.getUid());
 
-    // if (!mounted) return;
-    // final newUsername = await _routeManager.push<String>(
-    //   context,
-    //   ReNameScreen(
-    //     routeManager: _routeManager,
-    //     name: currentName,
-    //   ),
-    // );
+    if (!mounted) return;
+    final newUsername = await context.push<String>(
+      RouterEnums.rename.paths,
+      extra: RenamesData(name: currentName),
+    );
 
-    // if (newUsername == null) return;
+    if (newUsername == null) return;
 
-    // setState(() {
-    //   isLoading = true;
-    // });
+    setState(() {
+      isLoading = true;
+    });
 
-    // try {
-    //   await _firebaseViewModel.updateMyname(
-    //       _firebaseViewModel.getUid(), newUsername);
-    //   final partnerInfos =
-    //       await _firebaseViewModel.getPartnerInfo(_firebaseViewModel.getUid());
+    try {
+      await _firebaseViewModel.updateMyname(
+          _firebaseViewModel.getUid(), newUsername);
+      final partnerInfos =
+          await _firebaseViewModel.getPartnerInfo(_firebaseViewModel.getUid());
 
-    //   if (partnerInfos.isNotEmpty) {
-    //     await _firebaseViewModel.updatePartnername(
-    //       _firebaseViewModel.getUid(),
-    //       partnerInfos.entries.first.key,
-    //       newUsername,
-    //     );
-    //   }
-    // } finally {
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // }
+      if (partnerInfos.isNotEmpty) {
+        await _firebaseViewModel.updatePartnername(
+          _firebaseViewModel.getUid(),
+          partnerInfos.entries.first.key,
+          newUsername,
+        );
+      }
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   /// ログアウト処理を行う
   Future<void> _handleLogout() async {
-    // final result = await DialogHelper.showSelectDialog(
-    //   context,
-    //   _routeManager,
-    //   TextContents.confirmLogout.text,
-    //   TextContents.ok.text,
-    //   Theme.of(context).primaryColor,
-    // );
+    final result = await DialogHelper.showSelectDialog(
+      context,
+      TextContents.confirmLogout.text,
+      TextContents.ok.text,
+      Theme.of(context).primaryColor,
+    );
 
-    // if (result != null && result) {
-    //   _firebaseViewModel.logout();
-    // }
+    if (result != null && result) {
+      _firebaseViewModel.logout();
+    }
   }
 
   Widget _buildColorButton(String color) {
@@ -177,7 +175,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           pressedColor: kTextBaseColorBlack.withAlpha(150),
           onTap: () {
             if (isLoading) return;
-            _routeManager.pop(context);
+            context.pop();
           },
         ),
       ),
@@ -233,25 +231,21 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           children: [
             _buildThemeSettingTile(),
             TermsOfServiceTile(
-              routeManager: _routeManager,
               title: TextContents.privacyPolicy.text,
               url: urlMap['privacyPolicy']!,
               iconData: HugeIcons.strokeRoundedFileSecurity,
             ),
             TermsOfServiceTile(
-              routeManager: _routeManager,
               title: TextContents.termsOfService.text,
               url: urlMap['termsOfService']!,
               iconData: HugeIcons.strokeRoundedLicense,
             ),
             TermsOfServiceTile(
-              routeManager: _routeManager,
               title: TextContents.license.text,
               url: urlMap['license']!,
               iconData: HugeIcons.strokeRoundedLicenseThirdParty,
             ),
-            UrHabtisTutorialsTile(
-              routeManager: _routeManager,
+            const UrHabtisTutorialsTile(
               isFinal: true,
             ),
           ],
@@ -287,43 +281,40 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     );
   }
 
-  // /// アカウント関連のセクションをまとめた
+  /// アカウント関連のセクションをまとめた
   Widget _buildAccountSection() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-          decoration: BoxDecoration(
-            color: kLightGray3,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: LoginTile(routeManager: _routeManager)
-          // StreamBuilder(
-          //   stream: _firebaseViewModel.getSteamUser(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasData) {
-          //       return _buildUserAccountOptions();
-          //     }
-          //     return LoginTile(routeManager: _routeManager);
-          //   },
-          // ),
-          ),
+        decoration: BoxDecoration(
+          color: kLightGray3,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: StreamBuilder(
+          stream: _firebaseViewModel.getSteamUser(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildUserAccountOptions();
+            }
+            return const LoginTile();
+          },
+        ),
+      ),
     );
   }
 
-  // /// ユーザーのアカウント関連の操作をまとめた
-  // Widget _buildUserAccountOptions() {
-  //   return Column(
-  //     mainAxisSize: MainAxisSize.min,
-  //     children: [
-  //       ChangeUsernameTile(onUsernameChange: _handleChangeUsername),
-  //       ChangePasswordTile(
-  //           email: _firebaseViewModel.getEmail(), routeManager: _routeManager),
-  //       LogoutTile(onLogout: _handleLogout),
-  //       UnregisterTile(
-  //           routeManager: _routeManager, firebaseViewModel: _firebaseViewModel)
-  //     ],
-  //   );
-  // }
+  /// ユーザーのアカウント関連の操作をまとめた
+  Widget _buildUserAccountOptions() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ChangeUsernameTile(onUsernameChange: _handleChangeUsername),
+        ChangePasswordTile(email: _firebaseViewModel.getEmail()),
+        LogoutTile(onLogout: _handleLogout),
+        UnregisterTile(firebaseViewModel: _firebaseViewModel)
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +325,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ? const Center(
               child: CustomIndicator(),
             )
-          : SingleChildScrollView(
+          : UrHabitsScrollView(
               child: Column(
                 children: [
                   _buildSectionTitle(TextContents.others.text),

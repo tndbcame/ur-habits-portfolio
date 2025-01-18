@@ -29,7 +29,6 @@ class AccumulationTile extends StatelessWidget {
     return HabitDetailListTile(
       title: TextContents.cumulative.text,
       itemHeight: 80,
-      isRequiredMark: true,
       isDropDown: true,
       mainItem: Expanded(
         child: isUpdate

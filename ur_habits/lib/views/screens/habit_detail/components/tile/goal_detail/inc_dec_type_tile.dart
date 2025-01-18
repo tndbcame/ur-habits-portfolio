@@ -55,7 +55,6 @@ class IncDecTypeTile extends StatelessWidget {
       title: TextContents.goalProgress.text,
       itemHeight: 80,
       isDropDown: true,
-      isRequiredMark: true,
       mainItem: Expanded(
         child: accumulationType == 1 || accumulationType == 2
             ? _buildIncDecTypeText()

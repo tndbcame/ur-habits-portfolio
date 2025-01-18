@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/button/input_dialog_button.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/tile/input_dialog_tile.dart';
 import 'package:ur_habits/resources/colors.dart';
@@ -8,14 +8,13 @@ import 'package:ur_habits/resources/colors.dart';
 class StarDialog extends StatefulWidget {
   const StarDialog({
     super.key,
-    required this.routeManager,
     required this.dialogTitle,
     this.values,
     this.val,
     this.onDelete,
     this.date,
   });
-  final RouteManager routeManager;
+
   final String dialogTitle;
   final Map<DateTime, String>? values;
   final double? val;
@@ -94,15 +93,13 @@ class _StarDialogState extends State<StarDialog> {
   @override
   Widget build(BuildContext context) {
     return InputDialogTile(
-      routeManager: widget.routeManager,
       mainAxisAlignment: MainAxisAlignment.center,
       dialogTitle: widget.dialogTitle,
       mainItems: _buildMainItems(),
       subItem: InputDialogButton(
-        routeManager: widget.routeManager,
         onOkPressed: () {
-          widget.routeManager.pop<(String, DateTime?)>(
-              context, (_selectedValue.toString(), _selectedDate));
+          context.pop<(String, DateTime?)>(
+              (_selectedValue.toString(), _selectedDate));
         },
         buttonColor: Theme.of(context).primaryColor,
       ),

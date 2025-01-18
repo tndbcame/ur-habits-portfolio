@@ -29,7 +29,6 @@ class DataTypeTile extends StatelessWidget {
       title: TextContents.dataType.text,
       itemHeight: 80,
       onTap: isUpdate ? showOverlayDialog : null,
-      isRequiredMark: true,
       isDropDown: true,
       mainItem: Expanded(
         child: isUpdate

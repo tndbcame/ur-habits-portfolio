@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
 import 'package:ur_habits/utils/ui/validators/auth_validator.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 import 'package:ur_habits/views/screens/auth/components/container/auth_form_container.dart';
 import 'package:ur_habits/views/screens/auth/components/form/auth_text_form.dart';
 import 'package:ur_habits/views/screens/auth/components/tile/auth_input_list_tile.dart';
 
-class ReNameScreen extends StatefulWidget {
-  const ReNameScreen({
+class RenameScreen extends StatefulWidget {
+  const RenameScreen({
     super.key,
     required this.name,
-    required this.routeManager,
   });
 
   final String name;
-  final RouteManager routeManager;
 
   @override
-  State<ReNameScreen> createState() => _ReNameScreenState();
+  State<RenameScreen> createState() => _RenameScreenState();
 }
 
-class _ReNameScreenState extends State<ReNameScreen> {
+class _RenameScreenState extends State<RenameScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late String _enteredName;
 
@@ -41,7 +40,7 @@ class _ReNameScreenState extends State<ReNameScreen> {
   /// 完了ボタン押下時の処理
   void _onComplete() {
     if (_validateAndSaveForm()) {
-      widget.routeManager.pop<String>(context, _enteredName);
+      context.pop<String>(_enteredName);
     }
   }
 
@@ -63,7 +62,7 @@ class _ReNameScreenState extends State<ReNameScreen> {
       isBoldText: false,
       normalColor: kTextBaseColorBlack,
       pressedColor: kTextBaseColorBlack.withAlpha(150),
-      onTap: () => widget.routeManager.pop(context),
+      onTap: () => context.pop(),
     );
   }
 
@@ -99,7 +98,7 @@ class _ReNameScreenState extends State<ReNameScreen> {
         centerTitle: true,
         backgroundColor: kLightGray3,
       ),
-      body: SingleChildScrollView(
+      body: UrHabitsScrollView(
         child: Column(
           children: [
             AuthFormContainer(

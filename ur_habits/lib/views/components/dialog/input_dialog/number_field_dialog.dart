@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/utils/ui/validators/habit_validator.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/button/input_dialog_button.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/tile/input_dialog_tile.dart';
@@ -11,13 +11,12 @@ import 'package:ur_habits/data/models/ui/data_type.dart';
 class NumberFiledDialog extends StatefulWidget {
   const NumberFiledDialog({
     super.key,
-    required this.routeManager,
     required this.dataType,
     this.values,
     this.onDelete,
     this.date,
   });
-  final RouteManager routeManager;
+
   final DataType dataType;
   final Map<DateTime, String>? values;
   final void Function(
@@ -69,8 +68,7 @@ class _NumberFiledDialogState extends State<NumberFiledDialog> {
   void _saveItem() {
     _formKey.currentState!.save();
     if (_formKey.currentState!.validate()) {
-      widget.routeManager
-          .pop<(String, DateTime?)>(context, (_enteredVal, _selectedDate));
+      context.pop<(String, DateTime?)>((_enteredVal, _selectedDate));
     }
   }
 
@@ -135,12 +133,10 @@ class _NumberFiledDialogState extends State<NumberFiledDialog> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: InputDialogTile(
-        routeManager: widget.routeManager,
         mainAxisAlignment: MainAxisAlignment.start,
         dialogTitle: '${widget.dataType.name}を入力',
         mainItems: _buildMainItems(),
         subItem: InputDialogButton(
-          routeManager: widget.routeManager,
           onOkPressed: _saveItem,
           buttonColor: Theme.of(context).primaryColor,
         ),

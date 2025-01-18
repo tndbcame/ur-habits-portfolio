@@ -10,8 +10,10 @@ class ColorChangingBoxButton extends StatefulWidget {
     required this.onTap,
     this.isBoldText = false,
     this.leftIcon,
+    this.leftIconSize,
     this.labelText,
     this.textSize,
+    this.textPadding = 0,
     this.height,
     this.width,
     this.hasLeftBorder = false,
@@ -31,8 +33,10 @@ class ColorChangingBoxButton extends StatefulWidget {
   final VoidCallback onTap;
   final bool isBoldText;
   final IconData? leftIcon;
+  final double? leftIconSize;
   final String? labelText;
   final double? textSize;
+  final double textPadding;
   final double? height;
   final double? width;
   final bool hasLeftBorder;
@@ -99,15 +103,19 @@ class _ColorChangingBoxButtonState extends State<ColorChangingBoxButton> {
           Icon(
             widget.leftIcon,
             color: currentTextColor,
+            size: widget.leftIconSize,
           ),
         if (widget.labelText != null)
-          Text(
-            widget.labelText!,
-            style: TextStyle(
-              color: currentTextColor,
-              fontWeight:
-                  widget.isBoldText ? FontWeight.bold : FontWeight.normal,
-              fontSize: widget.textSize ?? 16.0,
+          Padding(
+            padding: EdgeInsets.all(widget.textPadding),
+            child: Text(
+              widget.labelText!,
+              style: TextStyle(
+                color: currentTextColor,
+                fontWeight:
+                    widget.isBoldText ? FontWeight.bold : FontWeight.normal,
+                fontSize: widget.textSize ?? 16.0,
+              ),
             ),
           ),
         if (widget.rightIcon != null)

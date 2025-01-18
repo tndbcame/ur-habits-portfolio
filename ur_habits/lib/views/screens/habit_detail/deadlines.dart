@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/views/components/calender/calender_page_view.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 
 class DeadlineScreen extends StatefulWidget {
   const DeadlineScreen({
     super.key,
     this.selectedDate,
-    required this.routeManager,
   });
 
   final DateTime? selectedDate;
-  final RouteManager routeManager;
   @override
   State<DeadlineScreen> createState() => _DeadlineScreenState();
 }
@@ -22,12 +21,12 @@ class DeadlineScreen extends StatefulWidget {
 class _DeadlineScreenState extends State<DeadlineScreen> {
   /// キャンセルボタン押下時に画面を戻す処理
   void _onCancelPressed(BuildContext context) {
-    widget.routeManager.pop(context);
+    context.pop();
   }
 
   /// 日付が選択された時の処理
   void _onDaySelected(BuildContext context, DateTime selectedDay) {
-    widget.routeManager.pop<DateTime>(context, selectedDay);
+    context.pop<DateTime>(selectedDay);
   }
 
   /// アップバー
@@ -56,7 +55,7 @@ class _DeadlineScreenState extends State<DeadlineScreen> {
 
   /// ボディ部分
   Widget _buildBody() {
-    return SingleChildScrollView(
+    return UrHabitsScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: CalenderPageView(

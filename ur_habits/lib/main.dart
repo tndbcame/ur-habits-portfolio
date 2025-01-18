@@ -1,32 +1,49 @@
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:ur_habits/firebase_options.dart';
 import 'package:ur_habits/data/services/isar_accesser.dart';
 import 'package:ur_habits/data/repositories/isar_repository.dart';
-import 'package:ur_habits/utils/helper/ads/ad_helper.dart';
+import 'package:ur_habits/routers/router.dart';
+import 'package:ur_habits/utils/ads/ad_helper.dart';
 import 'package:ur_habits/view_models/providers/theme_provider.dart';
-import 'package:ur_habits/views/screens/tabs/tabs.dart';
 
 void main() async {
-  //アプリの方向を縦方向のみ許可(縦向きで固定)
+  // アプリの方向を縦方向のみ許可 (縦向きで固定)
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  // isarの初期化
+
+  // Isarの初期化
   await IsarAccessor().initialize();
-  // firebase初期化
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+
+  // Firebase初期化 (エミュレータ用)
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: 'dummy-api-key', // ダミー値
+      appId: '1:1234567890:android:dummyappid', // ダミー値
+      messagingSenderId: '1234567890', // ダミー値
+      projectId: 'your-project-id', // プロジェクトIDを設定
+    ),
+  );
+
+  // Firebaseエミュレータの設定
+  FirebaseAuth.instance.useAuthEmulator('127.0.0.1', 9099); // Authentication
+  FirebaseFirestore.instance.settings = const Settings(
+    host: '127.0.0.1:8080', // Firestore
+    sslEnabled: false,
+    persistenceEnabled: false,
+  );
+
   // 広告の初期化
   await AdHelper.initGoogleMobileAds();
 
-  //　ローカルDBの初期化処理（デバック用に作成）
+  // ローカルDBの初期化処理 (デバッグ用)
   final repository = IsarRepository(isar: IsarAccessor().isar);
-  repository.clearData(isClear: true); //DB初期化するときはここをisInitをtrueにする
+  repository.clearData(isClear: false); // DBを初期化する場合はisClearをtrueに設定
 
   runApp(
     const ProviderScope(
@@ -44,10 +61,10 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // 現在のテーマを取得
     final theme = ref.watch(themeNotifierProvider);
-    return MaterialApp(
+    return MaterialApp.router(
       theme: theme,
-      home: const TabsScreen(),
       debugShowCheckedModeBanner: false,
+      routerConfig: router,
     );
   }
 }

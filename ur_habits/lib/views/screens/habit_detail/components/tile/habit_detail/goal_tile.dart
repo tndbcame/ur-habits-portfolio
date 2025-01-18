@@ -24,7 +24,6 @@ class GoalTile extends StatelessWidget {
         HabitDetailListTile(
           title: TextContents.goalExistence.text,
           itemHeight: 80,
-          isRequiredMark: true,
           mainItem: Expanded(
             child: Text(
               isGoal

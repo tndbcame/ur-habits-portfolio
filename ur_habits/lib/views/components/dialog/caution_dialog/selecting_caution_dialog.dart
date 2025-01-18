@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+
 import 'package:ur_habits/views/components/button/spring_button.dart';
 
 class SelectingCautionDialog extends StatelessWidget {
   const SelectingCautionDialog({
     super.key,
-    required this.routeManager,
     this.dialogPaddingHorizontal,
     required this.message,
     this.messageFontSize,
@@ -15,7 +15,6 @@ class SelectingCautionDialog extends StatelessWidget {
     required this.confirmButtonColor,
   });
 
-  final RouteManager routeManager;
   final double? dialogPaddingHorizontal;
   final String message;
   final double? messageFontSize;
@@ -41,7 +40,7 @@ class SelectingCautionDialog extends StatelessWidget {
           context,
           label: TextContents.cancel.text,
           onPressed: () {
-            routeManager.pop(context);
+            context.pop();
           },
           buttonColor: kDialogTextColor,
           height: 100,
@@ -50,7 +49,7 @@ class SelectingCautionDialog extends StatelessWidget {
           context,
           label: confirmButtonText,
           onPressed: () {
-            routeManager.pop<bool>(context, true);
+            context.pop<bool>(true);
           },
           buttonColor: confirmButtonColor,
           height: 50,
@@ -70,7 +69,6 @@ class SelectingCautionDialog extends StatelessWidget {
     return SpringButton(
       onTap: onPressed,
       child: SizedBox(
-        width: height,
         height: 50,
         child: Center(
           child: Padding(

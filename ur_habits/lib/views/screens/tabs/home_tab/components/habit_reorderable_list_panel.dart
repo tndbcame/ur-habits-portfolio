@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/data/models/ui/habit_view.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/resources/data.dart';
+import 'package:ur_habits/resources/extension/color_extension.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
 import 'package:ur_habits/views/components/button/spring_button.dart';
-import 'package:ur_habits/views/screens/habit_record/habit_records.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_bar.dart';
 import 'package:ur_habits/views/screens/tabs/components/tile/habit_list_tile.dart';
 
 class HabitReorderableListPanel extends StatelessWidget {
@@ -59,44 +64,48 @@ class HabitReorderableListPanel extends StatelessWidget {
   }
 
   /// リストビューをビルド
-  Widget _buildHabitListView(
-      List<HabitView> habits, double screenWidth, bool isPublic) {
-    return ReorderableListView.builder(
-      itemBuilder: (ctx, i) => HabitListTile(
-        key: Key('list_tile_key$i'),
-        leading: Icon(
-          habitIcons[habits[i].iconId],
-          color: kTextBaseColorBlack,
-        ),
-        title: Text(
-          habits[i].title,
-          style: const TextStyle(color: kTextBaseColorBlack),
-        ),
-        subtitle: Text(
-          habits[i].goal != null && habits[i].isGoal
-              ? habits[i].goal!.title
-              : '',
-          style: const TextStyle(color: kTextBaseColorBlack),
-        ),
-        trailing: _buildEditButton(ctx, habits[i], isPublic),
-        backgroundColor: kTextBaseColor,
-        downColor: kLightGray8,
-        height: 75,
-        onTap: () async {
-          await Navigator.of(ctx).push(
-            MaterialPageRoute(
-              builder: (ctx) => HabitRecordScreen(
+  Widget _buildHabitListView(BuildContext context, List<HabitView> habits,
+      double screenWidth, bool isPublic) {
+    return UrHabitsScrollBar(
+      thumbColor: Theme.of(context).primaryColor.applyOpacity(0.3),
+      thickness: 5,
+      child: ReorderableListView.builder(
+        itemBuilder: (ctx, i) => HabitListTile(
+          key: Key('list_tile_key$i'),
+          leading: Icon(
+            habitIcons[habits[i].iconId],
+            color: kTextBaseColorBlack,
+          ),
+          title: Text(
+            habits[i].title,
+            style: const TextStyle(color: kTextBaseColorBlack),
+          ),
+          subtitle: Text(
+            habits[i].goal != null && habits[i].isGoal
+                ? habits[i].goal!.title
+                : '',
+            style: const TextStyle(color: kTextBaseColorBlack),
+          ),
+          trailing: _buildEditButton(ctx, habits[i], isPublic),
+          backgroundColor: kTextBaseColor,
+          downColor: kLightGray8,
+          height: 75,
+          onTap: () async {
+            await ctx.push(
+              RouterEnums.habitRecord.paths,
+              extra: HabitRecordsData(
                 habit: habits[i],
-                popLabel: HugeIcons.strokeRoundedHome03,
+                ishome: true,
+                readOnly: false,
               ),
-            ),
-          );
+            );
+          },
+        ),
+        itemCount: habits.length,
+        onReorder: (int oldIndex, int newIndex) {
+          reorderHabits(habits, oldIndex, newIndex, isPublic);
         },
       ),
-      itemCount: habits.length,
-      onReorder: (int oldIndex, int newIndex) {
-        reorderHabits(habits, oldIndex, newIndex, isPublic);
-      },
     );
   }
 
@@ -126,8 +135,8 @@ class HabitReorderableListPanel extends StatelessWidget {
         children: [
           Text(
             noHabitsMessage ?? '',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
+            style: const TextStyle(
+              color: kTextBaseColorBlack,
               fontSize: 16,
             ),
           ),
@@ -152,7 +161,8 @@ class HabitReorderableListPanel extends StatelessWidget {
             _buildTitleContainer(title, screenWidth),
             habits.isNotEmpty
                 ? Expanded(
-                    child: _buildHabitListView(habits, screenWidth, isPublic),
+                    child: _buildHabitListView(
+                        context, habits, screenWidth, isPublic),
                   )
                 : _buildNoHabitsMessage(context),
           ],

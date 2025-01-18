@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/data.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
+import 'package:ur_habits/routers/router_data.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/resources/colors.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/views/screens/auth/components/button/auth_spring_button.dart';
-import 'package:ur_habits/views/screens/auth/logins.dart';
-import 'package:ur_habits/views/screens/auth/re_paswords.dart';
 
 class TitleScreen extends ConsumerStatefulWidget {
   const TitleScreen({super.key});
@@ -18,8 +18,6 @@ class TitleScreen extends ConsumerStatefulWidget {
 }
 
 class _TitleScreenState extends ConsumerState<TitleScreen> {
-  final RouteManager _routeManager = RouteManager();
-
   @override
   void initState() {
     super.initState();
@@ -33,7 +31,7 @@ class _TitleScreenState extends ConsumerState<TitleScreen> {
       isBoldText: false,
       normalColor: kTextBaseColorBlack,
       pressedColor: kTextBaseColorBlack.withAlpha(150),
-      onTap: () => _routeManager.pop(context),
+      onTap: () => context.pop(),
     );
   }
 
@@ -43,10 +41,8 @@ class _TitleScreenState extends ConsumerState<TitleScreen> {
       label: TextContents.login.text,
       buttonColor: Theme.of(context).primaryColor,
       onTap: () async {
-        await _routeManager.push<LoginScreen>(
-          context,
-          LoginScreen(routeManager: _routeManager, isLogin: true),
-        );
+        await context.push(RouterEnums.login.paths,
+            extra: LoginsData(isLogin: true));
       },
       height: 50,
       width: 300,
@@ -59,10 +55,8 @@ class _TitleScreenState extends ConsumerState<TitleScreen> {
       label: TextContents.register.text,
       buttonColor: kSecondBaseColor,
       onTap: () async {
-        await _routeManager.push<LoginScreen>(
-          context,
-          LoginScreen(routeManager: _routeManager, isLogin: false),
-        );
+        await context.push(RouterEnums.login.paths,
+            extra: LoginsData(isLogin: false));
       },
       height: 50,
       width: 300,
@@ -79,17 +73,14 @@ class _TitleScreenState extends ConsumerState<TitleScreen> {
         pressedColor: kTextSecondBaseColor.withAlpha(150),
         labelText: TextContents.forgotPassword.text,
         onTap: () async {
-          // await _routeManager.push<String>(
-          //   context,
-          //   RePasswordScreen(
-          //     routeManager: _routeManager,
-          //     backgroundColor: kTextBaseColor,
-          //     appBarColor: kTextBaseColor,
-          //     containerColor: kLightGray5,
-          //     cationText: TextContents.passwordResetEmailDescription.text +
-          //         TextContents.enterEmail.text,
-          //   ),
-          // );
+          await context.push(RouterEnums.repassword.paths,
+              extra: RepasswordsData(
+                cationText: TextContents.passwordResetEmailDescription.text +
+                    TextContents.enterEmail.text,
+                appBarColor: kTextBaseColor,
+                containerColor: kLightGray5,
+                backgroundColor: kTextBaseColor,
+              ));
         },
       ),
     );

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/resources/data.dart';
 import 'package:ur_habits/data/models/ui/habit_view.dart';
-import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/views/components/dialog/caution_dialog/overlay/overlay_manager.dart';
+import 'package:ur_habits/views/components/calender/calender_tap_area.dart';
 
-class CalendarPage extends StatefulWidget {
+class CalendarPage extends StatelessWidget {
   const CalendarPage({
     super.key,
     required this.activeDate,
@@ -33,19 +31,8 @@ class CalendarPage extends StatefulWidget {
   final HabitView? habit;
   final DateTime? selectedDate;
 
-  @override
-  State<CalendarPage> createState() => _CalendarPageState();
-}
-
-class _CalendarPageState extends State<CalendarPage>
-    with TickerProviderStateMixin {
-  final OverlayManager _overlayManager = OverlayManager();
-
   /// 日付に応じたテキストの色を決定
-  Color _dateTextColor(DateTime date, {bool? isSelectedDate}) {
-    if (isSelectedDate ?? false) {
-      return kTextBaseColor;
-    }
+  Color _dateTextColor(BuildContext context, DateTime date) {
     switch (date.weekday) {
       case DateTime.sunday:
         return kSecondBaseColor;
@@ -54,22 +41,6 @@ class _CalendarPageState extends State<CalendarPage>
       default:
         return Theme.of(context).primaryColor;
     }
-  }
-
-  /// 日付のテキストを生成する
-  Widget _buildDayText(DateTime date, bool isOtherMonth, bool isToday,
-      bool isOldToday, bool isSelectedDate) {
-    return Text(
-      date.day.toString(),
-      style: TextStyle(
-        fontSize: 16,
-        color: !isToday && isOldToday
-            ? kDarkGray
-            : isOtherMonth
-                ? kLightGray
-                : _dateTextColor(date, isSelectedDate: isSelectedDate),
-      ),
-    );
   }
 
   /// 選択された日付が別の月かどうか
@@ -105,94 +76,11 @@ class _CalendarPageState extends State<CalendarPage>
 
   /// 選択してある日付と一緒かどうか
   bool _isSelectedDate(DateTime date) {
-    return widget.selectedDate == date;
-  }
-
-  /// 日付ウィジェットのスタックを描画
-  Widget _buildStack(
-      BuildContext context,
-      DateTime date,
-      bool isToday,
-      bool isOtherMonth,
-      bool isOldToday,
-      bool isDeadline,
-      bool isSelectedDate,
-      HabitView? habit) {
-    return Stack(
-      alignment: AlignmentDirectional.center,
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          height: widget.useAsDialog
-              ? 30
-              : widget.useAsInput
-                  ? 40
-                  : 45,
-          width: widget.useAsDialog
-              ? 30
-              : widget.useAsInput
-                  ? 40
-                  : null,
-          padding: const EdgeInsets.all(1),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: isDeadline
-                ? kYellow2
-                : (isSelectedDate
-                    ? Theme.of(context).primaryColor
-                    : !isToday && isOldToday
-                        ? kLightGray8
-                        : kTextBaseColor),
-            borderRadius: BorderRadius.circular(10),
-            border: widget.useAsInput && isToday
-                ? Border.all(width: 1, color: kRed)
-                : null,
-          ),
-          child: habit != null &&
-                  habit.records != null &&
-                  habit.records!.containsKey(date)
-              ? Column(
-                  children: [
-                    const SizedBox(height: 15),
-                    Icon(HugeIcons.strokeRoundedTick01,
-                        color: Theme.of(context).primaryColor),
-                  ],
-                )
-              : widget.useAsInput
-                  ? _buildDayText(
-                      date, isOtherMonth, isToday, isOldToday, isSelectedDate)
-                  : null,
-        ),
-        if (!widget.useAsInput && !isToday)
-          Positioned(
-            top: -2,
-            child: _buildDayText(
-                date, isOtherMonth, isToday, isOldToday, isSelectedDate),
-          ),
-        if (!widget.useAsInput && isToday)
-          Positioned(
-            top: -2,
-            child: Container(
-              height: 25,
-              width: 25,
-              decoration: BoxDecoration(
-                color: kToday.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Center(
-                child: Text(
-                  date.day.toString(),
-                  style: const TextStyle(fontSize: 16, color: kTextBaseColor),
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
+    return selectedDate == date;
   }
 
   /// 日付のウィジェットを生成
-  Widget _dayWidget(
+  Widget _buildDayWidget(
     BuildContext context,
     DateTime date,
     bool addWeekDayStr,
@@ -207,43 +95,39 @@ class _CalendarPageState extends State<CalendarPage>
     bool isToday = _isToday(date);
     bool isOldToday = _isOldToday(date);
     bool isFutureToday = _isFutureToday(date);
-    bool isDeadline = _isDeadline(date, widget.habit);
+    bool isDeadline = _isDeadline(date, habit);
     bool isSelectedDate = _isSelectedDate(date);
 
-    if (!widget.notUseBeforeToday) isOldToday = false;
-    if (!widget.notUseAfterToday) isFutureToday = false;
+    if (!notUseBeforeToday) isOldToday = false;
+    if (!notUseAfterToday) isFutureToday = false;
 
     if (addWeekDayStr) {
-      if (widget.useAsInput) {
+      if (useAsInput) {
         dayColumn.add(const SizedBox(height: 10));
       }
       dayColumn.add(Text(
         weekdays[date.weekday - 1],
-        style: TextStyle(color: _dateTextColor(date)),
+        style: TextStyle(color: _dateTextColor(context, date)),
       ));
-      dayColumn.add(SizedBox(height: widget.useAsInput ? 15 : 30));
+      dayColumn.add(SizedBox(height: useAsInput ? 15 : 30));
     }
+    dayColumn.add(CalendarTapArea(
+      date: date,
+      useAsDialog: useAsDialog,
+      useAsInput: useAsInput,
+      isToday: isToday,
+      isOtherMonth: isOtherMonth,
+      isOldToday: isOldToday,
+      isDeadline: isDeadline,
+      isSelectedDate: isSelectedDate,
+      isFutureToday: isFutureToday,
+      onDaySelected: onDaySelected,
+      habit: habit,
+      dateTextColor: _dateTextColor,
+    ));
+    dayColumn.add(const SizedBox(height: 4));
 
-    dayColumn.addAll([
-      InkWell(
-        onTap: () {
-          if (!isToday && (isOldToday || isFutureToday)) {
-            String message = isOldToday
-                ? TextContents.pastDateError.text
-                : TextContents.futureDateError.text;
-            _overlayManager.showOverlayDialog(context, this, message);
-            return;
-          }
-          if (!context.mounted) return;
-          widget.onDaySelected(context, date);
-        },
-        child: _buildStack(context, date, isToday, isOtherMonth, isOldToday,
-            isDeadline, isSelectedDate, widget.habit),
-      ),
-      const SizedBox(height: 4),
-    ]);
-
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(left: padLeft, right: padRight, bottom: 5),
       child: Column(children: dayColumn),
     );
@@ -253,7 +137,8 @@ class _CalendarPageState extends State<CalendarPage>
   List<Widget> _generateWeekDays(List<DateTime> oneWeek, DateTime selectedDate,
       BuildContext context, bool isFirstWeek) {
     return oneWeek
-        .map((DateTime d) => _dayWidget(context, d, isFirstWeek, selectedDate))
+        .map((DateTime d) =>
+            _buildDayWidget(context, d, isFirstWeek, selectedDate))
         .toList();
   }
 
@@ -314,7 +199,7 @@ class _CalendarPageState extends State<CalendarPage>
           _generateAdditionalDates(oneWeek[0], additionalDays);
 
       widgets.addAll(additionalDates
-          .map((d) => _dayWidget(context, d, isFirstWeek, selectedDate)));
+          .map((d) => _buildDayWidget(context, d, isFirstWeek, selectedDate)));
       widgets.addAll(
           _generateWeekDays(oneWeek, selectedDate, context, isFirstWeek));
     }
@@ -325,11 +210,11 @@ class _CalendarPageState extends State<CalendarPage>
   @override
   Widget build(BuildContext context) {
     List<List<DateTime>> drawnDates =
-        _generateDatesInMonth(widget.activeDate.year, widget.activeDate.month);
+        _generateDatesInMonth(activeDate.year, activeDate.month);
     return Table(
         children: drawnDates
             .map((List<DateTime> week) =>
-                _generateWeekWidget(week, widget.activeDate, context))
+                _generateWeekWidget(week, activeDate, context))
             .toList());
   }
 }

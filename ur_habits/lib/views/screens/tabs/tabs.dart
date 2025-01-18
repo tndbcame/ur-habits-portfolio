@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/utils/helper/dialog_helper.dart';
-import 'package:ur_habits/utils/ui/ui_helper.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
+import 'package:ur_habits/utils/ui/helpers/dialog_helper.dart';
+import 'package:ur_habits/utils/ui/helpers/ui_helper.dart';
 import 'package:ur_habits/view_models/firestore_view_model.dart';
 import 'package:ur_habits/views/components/Indicator/custom_indicator.dart';
-import 'package:ur_habits/utils/helper/ads/ad_manager.dart';
+import 'package:ur_habits/utils/ads/ad_manager.dart';
 import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
 import 'package:ur_habits/views/components/button/help_button.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 import 'package:ur_habits/views/components/text/discription_text.dart';
 import 'package:ur_habits/views/components/text/discription_title.dart';
-import 'package:ur_habits/views/screens/setting/settings.dart';
 import 'package:ur_habits/views/screens/tabs/components/drawer/app_drawer.dart';
 import 'package:ur_habits/view_models/providers/firebase_habits_provider.dart';
 import 'package:ur_habits/view_models/providers/isar_habits_provider.dart';
 import 'package:ur_habits/data/models/ui/habit_view.dart';
-import 'package:ur_habits/routers/route_manager.dart';
-import 'package:ur_habits/views/screens/habit_detail/habit_details.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/views/screens/tabs/home_tab/home_tab.dart';
 import 'package:ur_habits/views/screens/tabs/partner_tab/partner_tab.dart';
@@ -35,8 +37,8 @@ class TabsScreen extends ConsumerStatefulWidget {
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final RouteManager _routeManager = RouteManager();
-  // final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
+
+  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
   late AdManager _adManager;
   bool _isLoading = false;
   int _selectPageIndex = 0;
@@ -45,12 +47,12 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void initState() {
     super.initState();
     _adManager = AdManager();
-    _adManager.loadBannerAd(AdSize.fullBanner);
+    _adManager.loadBannerAd(AdSize.banner);
     _adManager.loadInterstitialAd();
   }
 
   Future<void> _showDescriptionDialog() async {
-    await DialogHelper.showDescriptionDialog(context, _routeManager, [
+    await DialogHelper.showDescriptionDialog(context, [
       DiscriptionTitle(title: TextContents.home.text),
       DiscriptionText(text: TextContents.manageHabitInfo.text),
       DiscriptionTitle(title: TextContents.partner.text),
@@ -75,9 +77,9 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void _addItem() async {
     final publicHabitsSize =
         ref.read(firebaseHabitsProvider.notifier).countHabits();
-    final newItem = await _routeManager.push<HabitView>(
-      context,
-      HabitDetailsScreen(
+    final newItem = await context.push<HabitView>(
+      RouterEnums.habitDetails.paths,
+      extra: HabitDetailsData(
         isUpdate: false,
         publicHabitsSize: publicHabitsSize,
       ),
@@ -112,7 +114,8 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     if (pref.getBool('isInitialLaunch') != true) {
       await pref.setBool('isInitialLaunch', true);
       if (!context.mounted) return;
-      await _routeManager.showTutorial(context);
+      await context.push(RouterEnums.urHabitsTutorial.paths,
+          extra: UrHabitsTutorialsData());
     }
   }
 
@@ -161,7 +164,6 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
           if (snapshot.hasData) {
             return HomeTab(
               usePublicHabits: snapshot.data,
-              routeManager: _routeManager,
             );
           }
           return SizedBox(
@@ -175,13 +177,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
         },
       );
     }
-    return HomeTab(
-      routeManager: _routeManager,
-    );
+    return const HomeTab();
   }
 
   Widget _buildTabContent(Widget child, double width) {
-    return SingleChildScrollView(
+    return UrHabitsScrollView(
       child: Column(
         children: [
           child,
@@ -196,57 +196,44 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   /// Body（メインコンテンツ）
   Widget _buildBody() {
-    // return StreamBuilder(
-    //   stream: _firebaseViewModel.getSteamUser(),
-    //   builder: (context, snapshot) {
-    //     final screenWidth = MediaQuery.of(context).size.width;
-    //     final screenHeight = MediaQuery.of(context).size.height;
-    //     final statusBarHeight = MediaQuery.of(context).padding.top;
-    //     final availableHeight =
-    //         UIHelper.calcScreenSize(screenHeight, statusBarHeight);
-    //     if (snapshot.connectionState == ConnectionState.waiting || _isLoading) {
-    //       return SizedBox(
-    //         height: availableHeight * 0.85,
-    //         child: const Center(
-    //           child: CustomIndicator(
-    //             color: kTextBaseColor,
-    //           ),
-    //         ),
-    //       );
-    //     }
+    return StreamBuilder(
+      stream: _firebaseViewModel.getSteamUser(),
+      builder: (context, snapshot) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+        final statusBarHeight = MediaQuery.of(context).padding.top;
+        final availableHeight =
+            UIHelper.calcScreenSize(screenHeight, statusBarHeight);
+        if (snapshot.connectionState == ConnectionState.waiting || _isLoading) {
+          return SizedBox(
+            height: availableHeight * 0.85,
+            child: const Center(
+              child: CustomIndicator(
+                color: kTextBaseColor,
+              ),
+            ),
+          );
+        }
 
-    //     Future<bool>? usePublicHabits;
-    //     if (snapshot.hasData) {
-    //       usePublicHabits =
-    //           ref.read(firebaseHabitsProvider.notifier).fetchHabits();
-    //     }
+        Future<bool>? usePublicHabits;
+        if (snapshot.hasData) {
+          usePublicHabits =
+              ref.read(firebaseHabitsProvider.notifier).fetchHabits();
+        }
 
-    //     if (_selectPageIndex == 0) {
-    //       return _buildTabContent(
-    //           _buildHomeTab(usePublicHabits, availableHeight * 0.85),
-    //           screenWidth);
-    //     } else {
-    //       return _buildTabContent(
-    //           PartnerTab(
-    //             routeManager: _routeManager,
-    //             firebaseViewModel: _firebaseViewModel,
-    //           ),
-    //           screenWidth);
-    //     }
-    //   },
-    // );
-
-    //仮の処理作成
-    final screenWidth = MediaQuery.of(context).size.width;
-    if (_selectPageIndex == 0) {
-      return _buildTabContent(
-          HomeTab(
-            routeManager: _routeManager,
-          ),
-          screenWidth);
-    } else {
-      return const Text('パートナータブは見れません');
-    }
+        if (_selectPageIndex == 0) {
+          return _buildTabContent(
+              _buildHomeTab(usePublicHabits, availableHeight * 0.85),
+              screenWidth);
+        } else {
+          return _buildTabContent(
+              PartnerTab(
+                firebaseViewModel: _firebaseViewModel,
+              ),
+              screenWidth);
+        }
+      },
+    );
   }
 
   /// 追加ボタン
@@ -282,8 +269,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   /// ドロワー
   Widget _buildDrawer() {
     return AppDrawer(
-      //  firebaseViewModel: _firebaseViewModel,
-      routeManager: _routeManager,
+      firebaseViewModel: _firebaseViewModel,
     );
   }
 

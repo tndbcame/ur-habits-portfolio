@@ -24,7 +24,6 @@ class TitleTile extends StatelessWidget {
     return HabitDetailListTile(
       title: TextContents.title.text,
       itemHeight: 90,
-      isRequiredMark: true,
       mainItem: Expanded(
         child: HabitDetailTextForm(
           hintText: hintText,

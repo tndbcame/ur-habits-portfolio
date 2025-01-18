@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ur_habits/resources/colors.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
 import 'package:ur_habits/views/components/tile/auth_list_tile.dart';
-//import 'package:ur_habits/views/screens/auth/re_paswords.dart';
 
 class ChangePasswordTile extends StatelessWidget {
   const ChangePasswordTile({
     super.key,
     required this.email,
-    required this.routeManager,
   });
 
-  final RouteManager routeManager;
   final String email;
 
   /// パスワード変更処理の画面へ遷移する
   Future<void> _navigateToRePasswordScreen(BuildContext context) async {
-    // await routeManager.push<String>(
-    //   context,
-    //   RePasswordScreen(
-    //     routeManager: routeManager,
-    //     email: email,
-    //     title: TextContents.changePassword.text,
-    //     cationText: TextContents.passwordResetEmailDescription.text +
-    //         TextContents.enterCurrentEmail.text,
-    //   ),
-    // );
+    await context.push(
+      RouterEnums.repassword.paths,
+      extra: RepasswordsData(
+        title: TextContents.changePassword.text,
+        cationText: TextContents.passwordResetEmailDescription.text +
+            TextContents.enterCurrentEmail.text,
+        email: email,
+      ),
+    );
   }
 
   @override

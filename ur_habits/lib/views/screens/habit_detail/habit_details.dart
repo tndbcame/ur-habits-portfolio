@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/utils/helper/dialog_helper.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
+import 'package:ur_habits/utils/ui/helpers/dialog_helper.dart';
 import 'package:ur_habits/views/components/button/help_button.dart';
 import 'package:ur_habits/views/components/dialog/caution_dialog/overlay/overlay_manager.dart';
 import 'package:ur_habits/view_models/firestore_view_model.dart';
@@ -13,7 +17,7 @@ import 'package:ur_habits/data/models/ui/data_type.dart';
 import 'package:ur_habits/data/models/ui/habit_goal_view.dart';
 import 'package:ur_habits/data/models/ui/habit_values.dart';
 import 'package:ur_habits/data/models/ui/habit_view.dart';
-import 'package:ur_habits/routers/route_manager.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 import 'package:ur_habits/views/components/text/discription_text.dart';
 import 'package:ur_habits/views/components/text/discription_title.dart';
 import 'package:ur_habits/views/screens/habit_detail/components/tile/habit_detail/accumulation_tile.dart';
@@ -23,8 +27,6 @@ import 'package:ur_habits/views/screens/habit_detail/components/tile/habit_detai
 import 'package:ur_habits/views/screens/habit_detail/components/tile/habit_detail/icon_tile.dart';
 import 'package:ur_habits/views/screens/habit_detail/components/tile/title_tile.dart';
 import 'package:ur_habits/views/screens/habit_detail/components/tile/habit_detail/unit_tile.dart';
-import 'package:ur_habits/views/screens/habit_detail/goal_details.dart';
-import 'package:ur_habits/views/screens/habit_detail/icons.dart';
 import 'package:ur_habits/resources/colors.dart';
 
 class HabitDetailsScreen extends StatefulWidget {
@@ -46,9 +48,9 @@ class HabitDetailsScreen extends StatefulWidget {
 class _HabitDetailsScreenState extends State<HabitDetailsScreen>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final RouteManager _routeManager = RouteManager();
+
   final OverlayManager _overlayManager = OverlayManager();
-//  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
+  final FirebaseViewModel _firebaseViewModel = FirebaseViewModel();
   int _habitType = 1;
   int _selectedIconIndex = 1;
   int _accumulationType = 1;
@@ -82,7 +84,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
   }
 
   Future<void> _showDescriptionDialog() async {
-    await DialogHelper.showDescriptionDialog(context, _routeManager, [
+    await DialogHelper.showDescriptionDialog(context, [
       DiscriptionTitle(title: TextContents.habitType.text),
       DiscriptionText(text: TextContents.selectHabitVisibility.text),
       DiscriptionTitle(title: TextContents.title.text),
@@ -100,7 +102,6 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
       DiscriptionTitle(title: TextContents.goal.text),
       DiscriptionText(text: TextContents.setGoalValue.text),
       const SizedBox(height: 20),
-      DiscriptionText(text: TextContents.requiredFieldsNote.text),
       DiscriptionText(text: TextContents.deleteHabitInfo.text),
     ]);
   }
@@ -130,9 +131,9 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
 
   /// アイコン選択画面に遷移し、結果を反映
   void _setIcons(int selectedIcons) async {
-    final newSelectedIcons = await _routeManager.push<int>(
-      context,
-      IconsScreen(routeManager: _routeManager, iconId: selectedIcons),
+    final newSelectedIcons = await context.push<int>(
+      RouterEnums.icons.paths,
+      extra: IconsData(iconId: selectedIcons),
     );
 
     if (newSelectedIcons != null) {
@@ -144,10 +145,9 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
 
   /// 目標設定画面に遷移し、結果を反映
   void _setGoalItem() async {
-    final newHabitGoal = await _routeManager.push<HabitGoalView>(
-      context,
-      GoalDetailsScreen(
-        routeManager: _routeManager,
+    final newHabitGoal = await context.push<HabitGoalView>(
+      RouterEnums.goalDetails.paths,
+      extra: GoalDetailsData(
         selectedDataType: _selectedDataType,
         accumulationType: _accumulationType,
         isUpdate: widget.isUpdate,
@@ -165,14 +165,14 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
   /// データタイプ選択時の警告表示
   void _goalResetWarning() async {
     if (_habitGoal != null) {
-      await _routeManager.showAnimationDialog(
+      await DialogHelper.showAnimationDialog(
         context,
         CautionDialog(
           message: TextContents.goalResetWarning.text,
           messageFontSize: 16,
           confirmButtonColor: Theme.of(context).primaryColor,
           onConfirm: () {
-            _routeManager.pop(context);
+            context.pop();
           },
         ),
         animaType: 1,
@@ -198,10 +198,9 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
 
   /// 習慣の削除確認と削除処理
   void _onDelete() async {
-    final isDelete = await _routeManager.showAnimationDialog<bool>(
+    final isDelete = await DialogHelper.showAnimationDialog<bool>(
       context,
       SelectingCautionDialog(
-        routeManager: _routeManager,
         message: TextContents.confirmHabitDelete.text,
         confirmButtonText: TextContents.delete.text,
         messageFontSize: 16,
@@ -211,8 +210,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
     );
 
     if (isDelete == true && mounted) {
-      _routeManager.pop<HabitView>(
-        context,
+      context.pop<HabitView>(
         HabitView(
           id: widget.habit!.id,
           habitType: widget.habit!.habitType,
@@ -234,8 +232,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       final id = widget.habit?.id ?? -1;
-      _routeManager.pop<HabitView>(
-        context,
+      context.pop<HabitView>(
         HabitView(
           id: id,
           habitType: _habitType,
@@ -285,14 +282,14 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
         isBoldText: false,
         normalColor: kTextBaseColorBlack,
         pressedColor: kTextBaseColorBlack.withAlpha(150),
-        onTap: () => _routeManager.pop(context),
+        onTap: () => context.pop(),
       ),
       title: Text(
         widget.isUpdate
             ? TextContents.editHabit.text
             : TextContents.addHabit.text,
         style: const TextStyle(
-          fontSize: 20,
+          fontSize: 18,
           color: kTextThirdBaseColor,
         ),
       ),
@@ -324,12 +321,12 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
 
   /// フォーム内容
   Widget _buildFormContent(BuildContext context) {
-    return SingleChildScrollView(
+    return UrHabitsScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           HabitTypeTile(
-            //  userStream: _firebaseViewModel.getSteamUser(),
+            userStream: _firebaseViewModel.getSteamUser(),
             habitType: _habitType,
             onTapHabitType: _toggleHabitType,
             showOverlayDialog: _showOverlayDialog,
@@ -413,7 +410,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen>
     return Scaffold(
       backgroundColor: kLightGray2,
       appBar: _buildAppBar(),
-      body: SingleChildScrollView(
+      body: UrHabitsScrollView(
         child: Column(
           children: [
             Form(

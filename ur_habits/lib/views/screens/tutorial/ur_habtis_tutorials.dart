@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_overboard/flutter_overboard.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/resources/data.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 
 class UrHabitsTutorialScreen extends StatelessWidget {
   const UrHabitsTutorialScreen({
     super.key,
-    required this.routeManager,
   });
-
-  final RouteManager routeManager;
 
   // 画像を生成する
   Widget _buildImage(BuildContext context, String path) {
@@ -142,7 +139,7 @@ class UrHabitsTutorialScreen extends StatelessWidget {
           child: Text(
             TextContents.recordYourHabitPrompt.text,
             style: const TextStyle(
-              color: Colors.white,
+              color: kTextBaseColor,
               fontSize: 32,
             ),
           ),
@@ -160,10 +157,10 @@ class UrHabitsTutorialScreen extends StatelessWidget {
         pages: _buildPages(context),
         showBullets: true,
         skipCallback: () {
-          routeManager.pop(context);
+          context.pop();
         },
         finishCallback: () {
-          routeManager.pop(context);
+          context.pop();
         },
       ),
     );

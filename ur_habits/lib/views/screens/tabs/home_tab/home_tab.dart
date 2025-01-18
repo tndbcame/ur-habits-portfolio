@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ur_habits/resources/data.dart';
+import 'package:ur_habits/resources/extension/router_extension.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/utils/ui/ui_helper.dart';
+import 'package:ur_habits/routers/router_data.dart';
+
+import 'package:ur_habits/utils/ui/helpers/ui_helper.dart';
 import 'package:ur_habits/views/components/Indicator/custom_indicator.dart';
 import 'package:ur_habits/view_models/providers/firebase_habits_provider.dart';
 import 'package:ur_habits/view_models/providers/isar_habits_provider.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/data/models/ui/habit_view.dart';
-import 'package:ur_habits/views/screens/habit_detail/habit_details.dart';
 import 'package:ur_habits/resources/colors.dart';
+import 'package:ur_habits/views/components/scroll/ur_habits_scroll_view.dart';
 import 'package:ur_habits/views/screens/tabs/home_tab/components/habit_reorderable_list_panel.dart';
 
 class HomeTab extends ConsumerStatefulWidget {
   const HomeTab({
     super.key,
     this.usePublicHabits,
-    required this.routeManager,
   });
 
-  final RouteManager routeManager;
   final bool? usePublicHabits;
 
   @override
@@ -48,11 +50,10 @@ class _HomeScreen extends ConsumerState<HomeTab> {
     if (isPublic) {
       publicHabitsSize -= 1;
     }
-    final habit = await widget.routeManager.push<HabitView>(
-        context,
-        HabitDetailsScreen(
-          habit: habitItem,
+    final habit = await context.push<HabitView>(RouterEnums.habitDetails.paths,
+        extra: HabitDetailsData(
           isUpdate: true,
+          habit: habitItem,
           publicHabitsSize: publicHabitsSize,
         ));
 
@@ -147,7 +148,7 @@ class _HomeScreen extends ConsumerState<HomeTab> {
       );
     }
 
-    return SingleChildScrollView(
+    return UrHabitsScrollView(
       child: Column(
         children: [
           Padding(
@@ -189,7 +190,7 @@ class _HomeScreen extends ConsumerState<HomeTab> {
                       ),
                     ),
                     Text(
-                      '${publicHabits.length}/3',
+                      '${publicHabits.length}/$limitPublicHabits',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 16,

@@ -5,13 +5,15 @@ import 'package:ur_habits/data/models/habit.dart';
 import 'package:ur_habits/data/models/habit_goal.dart';
 import 'package:ur_habits/data/models/habit_record.dart';
 import 'package:ur_habits/data/models/init.dart';
+import 'package:ur_habits/data/repositories/abstract/local_repository.dart';
 
 /// ローカルDB(isar)とのやり取りを行うリポジトリクラス
-class IsarRepository {
+class IsarRepository extends LocalRepository {
   IsarRepository({required this.isar});
   final Isar isar;
 
   /// 初期データをクリアする
+  @override
   void clearData({bool isClear = false}) {
     if (isClear) {
       try {
@@ -26,7 +28,8 @@ class IsarRepository {
   }
 
   /// 初期データを取得する
-  Init? getInitData() {
+  @override
+  Init? fetchInitData() {
     try {
       return isar.inits.where().findFirstSync();
     } catch (e) {
@@ -37,7 +40,8 @@ class IsarRepository {
   }
 
   /// 初期データを挿入する
-  void insertInitData(Init initData) {
+  @override
+  void setInitData(Init initData) {
     try {
       isar.writeTxnSync(() {
         isar.inits.putSync(initData);
@@ -49,7 +53,8 @@ class IsarRepository {
   }
 
   /// すべての習慣を同期的に取得する
-  List<Habit> getAllHabitsSync() {
+  @override
+  List<Habit> fetchAllHabitsSync() {
     try {
       return isar.habits.where().findAllSync();
     } catch (e) {
@@ -60,7 +65,8 @@ class IsarRepository {
   }
 
   /// すべての習慣を非同期で取得する
-  Future<List<Habit>> getAllHabits() async {
+  @override
+  Future<List<Habit>> fetchAllHabits() async {
     try {
       return await isar.habits.where().findAll();
     } catch (e) {
@@ -71,7 +77,8 @@ class IsarRepository {
   }
 
   /// IDから習慣を同期的に取得する
-  Habit? getHabitByIdSync(int id) {
+  @override
+  Habit? fetchHabitByIdSync(int id) {
     try {
       return isar.habits.getSync(id);
     } catch (e) {
@@ -82,7 +89,8 @@ class IsarRepository {
   }
 
   /// IDから習慣を非同期で取得する
-  Future<Habit?> getHabitById(int id) async {
+  @override
+  Future<Habit?> fetchHabitById(int id) async {
     try {
       return await isar.habits.get(id);
     } catch (e) {
@@ -93,8 +101,12 @@ class IsarRepository {
   }
 
   /// 習慣を同期的に保存する
-  Habit? saveHabitSync(
-      Habit habit, HabitGoal? goal, List<HabitRecord> records) {
+  @override
+  Habit? setHabitSync(
+    Habit habit,
+    HabitGoal? goal,
+    List<HabitRecord> records,
+  ) {
     try {
       isar.writeTxnSync(() {
         isar.habits.putSync(habit);
@@ -114,8 +126,12 @@ class IsarRepository {
   }
 
   /// 習慣を非同期で保存する
-  Future<Habit?> saveHabit(
-      Habit habit, HabitGoal? goal, List<HabitRecord> records) async {
+  @override
+  Future<Habit?> setHabit(
+    Habit habit,
+    HabitGoal? goal,
+    List<HabitRecord> records,
+  ) async {
     try {
       await isar.writeTxn(() async {
         await isar.habits.put(habit);
@@ -137,12 +153,13 @@ class IsarRepository {
   }
 
   /// 習慣のレコードを同期的に削除する
+  @override
   Habit? deleteHabitRecordSync(int habitId, int recordId) {
     try {
       isar.writeTxnSync(() {
         isar.habitRecords.deleteSync(recordId);
       });
-      return getHabitByIdSync(habitId);
+      return fetchHabitByIdSync(habitId);
     } catch (e) {
       // エラー処理
       log('習慣レコードの削除中にエラーが発生しました: $e');
@@ -151,6 +168,7 @@ class IsarRepository {
   }
 
   /// 習慣を同期的に削除する
+  @override
   List<Habit> deleteHabitSync(
       Habit habit, HabitGoal? goal, List<HabitRecord?> records) {
     try {
@@ -167,7 +185,7 @@ class IsarRepository {
           }
         }
       });
-      return getAllHabitsSync();
+      return fetchAllHabitsSync();
     } catch (e) {
       // エラー処理
       log('習慣の削除中にエラーが発生しました: $e');
@@ -176,6 +194,7 @@ class IsarRepository {
   }
 
   /// 習慣を非同期で削除する
+  @override
   Future<List<Habit>> deleteHabit(
       Habit habit, HabitGoal? goal, List<HabitRecord?> records) async {
     try {
@@ -192,7 +211,7 @@ class IsarRepository {
           }
         }
       });
-      return await getAllHabits();
+      return await fetchAllHabits();
     } catch (e) {
       // エラー処理
       log('習慣の削除中にエラーが発生しました: $e');

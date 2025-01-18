@@ -1,7 +1,7 @@
 import 'package:ur_habits/data/models/habit_goal.dart';
 import 'package:ur_habits/data/models/ui/habit_goal_view.dart';
 import 'package:ur_habits/data/models/ui/habit_values.dart';
-//import 'package:ur_habits/utils/habit_converter.dart';
+import 'package:ur_habits/utils/habit_values_converter.dart';
 
 class HabitGoalViewMapper {
   static HabitGoalView goalToView(HabitGoal habitGoal) {
@@ -25,20 +25,18 @@ class HabitGoalViewMapper {
     final targetValues =
         _mapToHabitValues(goalData, 'targetStrVal', 'targetDurVal');
 
-    // final inputedDate = HabitConverter.toDate(goalData['inputedDate']);
-    // final deadline = goalData['deadline'] != null
-    //     ? HabitConverter.toDate(goalData['deadline'])
-    //     : null;
+    final inputedDate = HabitValuesConverter.toDate(goalData['inputedDate']);
+    final deadline = goalData['deadline'] != null
+        ? HabitValuesConverter.toDate(goalData['deadline'])
+        : null;
 
     return HabitGoalView(
       title: goalData['title'] as String,
       incDecTyep: goalData['incDecTyep'] as int,
       currentValues: currentValues,
       targetValues: targetValues,
-      // inputedDate: inputedDate!,
-      // deadline: deadline,
-      inputedDate: DateTime.parse("11111111"), // 仮の値
-      deadline: DateTime.parse("11111111"), // 仮の値
+      inputedDate: inputedDate!,
+      deadline: deadline,
       memo: goalData['memo'] as String,
     );
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ur_habits/resources/colors.dart';
 import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-import 'package:ur_habits/routers/route_manager.dart';
 import 'package:ur_habits/utils/ui/validators/habit_validator.dart';
 import 'package:ur_habits/utils/ui/validators/input_validator.dart';
 import 'package:ur_habits/views/components/dialog/input_dialog/button/input_dialog_button.dart';
@@ -10,11 +10,10 @@ import 'package:ur_habits/views/components/dialog/input_dialog/button/input_dial
 class TextFiledDialog extends StatefulWidget {
   const TextFiledDialog({
     super.key,
-    required this.routeManager,
     required this.titleText,
     required this.hintText,
   });
-  final RouteManager routeManager;
+
   final String titleText;
   final String hintText;
 
@@ -31,7 +30,7 @@ class _TextFiledDialogState extends State<TextFiledDialog> {
   void _saveItem() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      widget.routeManager.pop<String>(context, _enteredValue);
+      context.pop<String>(_enteredValue);
     }
   }
 
@@ -119,7 +118,6 @@ class _TextFiledDialogState extends State<TextFiledDialog> {
               children: [
                 ..._buildMainItems(),
                 InputDialogButton(
-                  routeManager: widget.routeManager,
                   onOkPressed: _saveItem,
                   buttonColor: Theme.of(context).primaryColor,
                 ),

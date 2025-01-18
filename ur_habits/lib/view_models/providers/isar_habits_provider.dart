@@ -12,7 +12,7 @@ class IsarHabitsNotifier extends StateNotifier<List<HabitView>> {
   }
 
   final _isarViewModel =
-      IsarViewModel(isarRepository: IsarRepository(isar: IsarAccessor().isar));
+      IsarViewModel(repo: IsarRepository(isar: IsarAccessor().isar));
 
   /// 初期化処理
   void _initialize() {

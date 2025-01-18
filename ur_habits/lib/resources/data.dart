@@ -5,6 +5,26 @@ import 'package:ur_habits/data/models/ui/habit_goal_view.dart';
 import 'package:ur_habits/data/models/ui/habit_values.dart';
 import 'package:ur_habits/data/models/ui/habit_view.dart';
 
+const int limitPartner = 3;
+const int limitPublicHabits = 3;
+
+enum TenkeyNumber {
+  one,
+  two,
+  three,
+  four,
+  five,
+  six,
+  seven,
+  eight,
+  nine,
+  zero,
+  zeroDouble,
+  decimal,
+  clear,
+  delete,
+}
+
 final _now = DateTime.now();
 final _nowDate = DateTime(_now.year, _now.month, _now.day);
 

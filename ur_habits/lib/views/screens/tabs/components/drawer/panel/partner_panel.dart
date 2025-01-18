@@ -1,88 +1,86 @@
-// import 'package:flutter/material.dart';
-// import 'package:hugeicons/hugeicons.dart';
-// import 'package:ur_habits/resources/colors.dart';
-// import 'package:ur_habits/resources/extension/text_constants_extension.dart';
-// import 'package:ur_habits/routers/route_manager.dart';
-// import 'package:ur_habits/utils/helper/dialog_helper.dart';
-// import 'package:ur_habits/view_models/firestore_view_model.dart';
-// import 'package:ur_habits/views/components/Indicator/custom_indicator.dart';
-// import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
-// import 'package:ur_habits/views/screens/tabs/components/drawer/panel/app_drawer_panel.dart';
-// import 'package:ur_habits/views/screens/tabs/components/panel/partner_request_panel.dart';
+import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:ur_habits/resources/colors.dart';
+import 'package:ur_habits/resources/extension/text_constants_extension.dart';
 
-// class PartnerPanel extends StatelessWidget {
-//   const PartnerPanel({
-//     super.key,
-//     required this.firebaseViewModel,
-//     required this.routeManager,
-//   });
+import 'package:ur_habits/utils/ui/helpers/dialog_helper.dart';
+import 'package:ur_habits/view_models/firestore_view_model.dart';
+import 'package:ur_habits/views/components/Indicator/custom_indicator.dart';
+import 'package:ur_habits/views/components/button/color_changing_text_button.dart';
+import 'package:ur_habits/views/screens/tabs/components/drawer/panel/app_drawer_panel.dart';
+import 'package:ur_habits/views/screens/tabs/components/panel/partner_request_panel.dart';
 
-//   final FirebaseViewModel firebaseViewModel;
-//   final RouteManager routeManager;
+class PartnerPanel extends StatelessWidget {
+  const PartnerPanel({
+    super.key,
+    required this.firebaseViewModel,
+  });
 
-//   Widget _buildPanelWithPartner(AsyncSnapshot snapshot, BuildContext context) {
-//     return AppDrawerPanel(
-//       width: 300,
-//       height: 150,
-//       title: TextContents.partner.text,
-//       titleColor: kDarkGray,
-//       widgetList: [
-//         Padding(
-//           padding: const EdgeInsets.only(top: 4, right: 4, bottom: 4),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Text(
-//                 snapshot.data!.docs[0].data()['username'].toString(),
-//                 style: const TextStyle(color: kDarkGray),
-//               ),
-//               ColorChangingTextButton(
-//                 normalColor: kSecondBaseColor,
-//                 pressedColor: kSecondBaseColor.withAlpha(150),
-//                 leftIcon: HugeIcons.strokeRoundedCancelCircle,
-//                 onTap: () async {
-//                   final result = await DialogHelper.showSelectDialog(
-//                     context,
-//                     routeManager,
-//                     TextContents.confirmPartnerRemoval.text,
-//                     TextContents.ok.text,
-//                     kSecondBaseColor,
-//                   );
-//                   if (result != null && result) {
-//                     firebaseViewModel.deletePartner(
-//                       firebaseViewModel.getUid(),
-//                       snapshot.data!.docs[0].id,
-//                     );
-//                   }
-//                 },
-//                 isBoldText: false,
-//               )
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
+  final FirebaseViewModel firebaseViewModel;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder(
-//       stream: firebaseViewModel.getPartnerSnapshot(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const CustomIndicator();
-//         }
+  Widget _buildPanelWithPartner(AsyncSnapshot snapshot, BuildContext context) {
+    return AppDrawerPanel(
+      width: 300,
+      title: TextContents.partner.text,
+      partnerCount: snapshot.data!.docs.length,
+      titleColor: kDarkGray,
+      widgetList: [
+        for (final doc in snapshot.data!.docs) ...{
+          Padding(
+            padding: const EdgeInsets.only(top: 4, right: 4, bottom: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  doc.data()['username'].toString(),
+                  style: const TextStyle(fontSize: 14, color: kDarkGray),
+                ),
+                ColorChangingTextButton(
+                  normalColor: kSecondBaseColor,
+                  pressedColor: kSecondBaseColor.withAlpha(150),
+                  leftIcon: HugeIcons.strokeRoundedCancelCircle,
+                  onTap: () async {
+                    final result = await DialogHelper.showSelectDialog(
+                      context,
+                      '${doc.data()['username'].toString()}さん\n${TextContents.confirmPartnerRemoval.text}',
+                      TextContents.ok.text,
+                      kSecondBaseColor,
+                    );
+                    if (result != null && result) {
+                      firebaseViewModel.deletePartner(
+                        firebaseViewModel.getUid(),
+                        doc.id,
+                      );
+                    }
+                  },
+                  isBoldText: false,
+                )
+              ],
+            ),
+          ),
+        }
+      ],
+    );
+  }
 
-//         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-//           return PartnerRequestPanel(
-//             routeManager: routeManager,
-//             firebaseViewModel: firebaseViewModel,
-//             backgroundColor: kLightGray5,
-//           );
-//         }
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: firebaseViewModel.getPartnerSnapshot(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CustomIndicator();
+        }
 
-//         return _buildPanelWithPartner(snapshot, context);
-//       },
-//     );
-//   }
-// }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return PartnerRequestPanel(
+            firebaseViewModel: firebaseViewModel,
+            backgroundColor: kLightGray5,
+          );
+        }
+
+        return _buildPanelWithPartner(snapshot, context);
+      },
+    );
+  }
+}

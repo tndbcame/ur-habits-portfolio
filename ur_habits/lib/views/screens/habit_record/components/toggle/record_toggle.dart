@@ -26,30 +26,6 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
     });
   }
 
-  /// 背景コンテナを作成する
-  Widget _buildBackgroundContainer() {
-    return Container(
-      width: double.infinity,
-      height: 30,
-      decoration: ShapeDecoration(
-        color: kLightGray2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(
-          widget.titles.length,
-          (index) => Text(
-            widget.titles[index],
-            style: const TextStyle(color: kTextBaseColorBlack),
-          ),
-        ),
-      ),
-    );
-  }
-
   /// アニメーションで動作するトグルボタンを作成する
   Widget _buildAnimatedToggle(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -69,13 +45,6 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
             ),
           ),
           alignment: Alignment.center,
-          child: Text(
-            initialPosition ? widget.titles[0] : widget.titles[1],
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
         ),
       ),
     );
@@ -83,18 +52,44 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 30,
-      margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-      child: Stack(
-        children: <Widget>[
-          GestureDetector(
-            onTap: _toggleSwitch,
-            child: _buildBackgroundContainer(),
+    return GestureDetector(
+      onTap: _toggleSwitch,
+      child: Container(
+        width: double.infinity,
+        height: 30,
+        decoration: ShapeDecoration(
+          color: kLightGray2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          _buildAnimatedToggle(context),
-        ],
+        ),
+        margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+        child: Stack(
+          children: <Widget>[
+            _buildAnimatedToggle(context),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    widget.titles[0],
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    widget.titles[1],
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
