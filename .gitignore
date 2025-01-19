@@ -36,4 +36,5 @@ storage.rules
 # Firebase Emulator related files
 firebase-debug.log
 firebase-debug.*
+firestore-debug.*
 **/.firebase/
