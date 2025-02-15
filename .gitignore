@@ -27,7 +27,7 @@ pubspec.lock
 
 # Firebase CLI config files
 .firebase/
-.firebaserc
+#.firebaserc
 #firebase.json
 firestore.indexes.json
 firestore.rules
