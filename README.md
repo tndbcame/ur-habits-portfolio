@@ -7,7 +7,12 @@
 ※このポートフォリオに掲載されているコードは、Firebaseのセキュリティに関するファイルを含めることができないため、実際の機能は一部制限(firebaseに関係ある処理)されていますが、デモとして動作する状態になっています。
 
 アプリのURLはこちらになります。  
+
+【Android】
 [https://play.google.com/store/apps/details?id=dev.dt.urHabits&hl=ja](https://play.google.com/store/apps/details?id=dev.dt.urHabits&hl=ja)
+
+【ios】
+[https://apps.apple.com/us/app/習慣管理アプリ-urhabits-目標達成-共有機能付き/id6740855436](https://apps.apple.com/us/app/習慣管理アプリ-urhabits-目標達成-共有機能付き/id6740855436)
 
 ## ⚪︎ 主な機能
 
@@ -30,86 +35,103 @@
 
 ## ⚪︎ 画面
 
-| 習慣一覧画面                                                                                                        | 習慣追加画面                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| ![習慣一覧画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296279.png)     | ![習慣追加画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296290.png)      |
-| 現在登録されている習慣の一覧を確認し、新しい習慣の追加や、編集マークをタップして編集・削除ができます。                          | 習慣の詳細を入力して新しい習慣を作成できます。習慣のタイトル、カテゴリなどあなたの習慣に適した設定をすることができます。      |
+| 習慣一覧画面                                                                                                | 習慣追加画面                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| ![習慣一覧画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296279.png) | ![習慣追加画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296290.png)              |
+| 現在登録されている習慣の一覧を確認し、新しい習慣の追加や、編集マークをタップして編集・削除ができます。      | 習慣の詳細を入力して新しい習慣を作成できます。習慣のタイトル、カテゴリなどあなたの習慣に適した設定をすることができます。 |
 
-| 目標設定画面                                                                                                     | パートナーの習慣一覧画面                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| ![目標設定画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296293.png) | ![パートナーの習慣一覧画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296298.png)      |
-| 前画面で設定した習慣に対して目標を設定することができます。期日、目標値などあなたに適した目標を設定することできます。                    | パートナーの習慣を確認できる画面となっています。習慣をタップして習慣記録を確認できます。          |
+| 目標設定画面                                                                                                         | パートナーの習慣一覧画面                                                                                                |
+| -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| ![目標設定画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296293.png)          | ![パートナーの習慣一覧画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296298.png) |
+| 前画面で設定した習慣に対して目標を設定することができます。期日、目標値などあなたに適した目標を設定することできます。 | パートナーの習慣を確認できる画面となっています。習慣をタップして習慣記録を確認できます。                                |
 
-| 記録画面(カレンダー)                                                                                                       | 記録画面(目標達成_グラフ)                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| ![記録画面(カレンダー)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296304.png)       | ![記録画面(目標達成_グラフ)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296323.png)   |
-| カレンダー形式で習慣の達成状況を可視化します。記録した日はチェックがつくため、一目で進捗状況を確認できます。                                | 円グラフを使用して、習慣の達成率や進捗をグラフで表示します。視覚的に進捗状況を把握できます。             |
+| 記録画面(カレンダー)                                                                                                | 記録画面(目標達成_グラフ)                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| ![記録画面(カレンダー)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296304.png) | ![記録画面(目標達成_グラフ)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296323.png) |
+| カレンダー形式で習慣の達成状況を可視化します。記録した日はチェックがつくため、一目で進捗状況を確認できます。        | 円グラフを使用して、習慣の達成率や進捗をグラフで表示します。視覚的に進捗状況を把握できます。                             |
 
-| 記録画面(目標達成_グラフなし)                                                                                                      | 設定画面                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| ![記録画面(目標達成_グラフなし)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296306.png)       | ![設定画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296329.png)         |
-| 円グラフを表示しないで目標値のみを表示する画面です。              | アプリの設定画面です。テーマカラーの変更やアカウント関係の情報の設定ができます。                          |
+| 記録画面(目標達成_グラフなし)                                                                                                | 設定画面                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| ![記録画面(目標達成_グラフなし)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296306.png) | ![設定画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296329.png) |
+| 円グラフを表示しないで目標値のみを表示する画面です。                                                                         | アプリの設定画面です。テーマカラーの変更やアカウント関係の情報の設定ができます。                        |
 
-| タイトル画面                                                                                                 | 新規アカウント作成画面                                                                                                           |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| ![タイトル画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296334.png) | ![新規アカウント作成画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296339.png)            |
-| アプリのタイトル画面です。ログインや新規アカウント作成を選択できる画面です。                 | アカウントを新規で作成することができる画面です。           |
+| タイトル画面                                                                                                | 新規アカウント作成画面                                                                                                |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| ![タイトル画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296334.png) | ![新規アカウント作成画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296339.png) |
+| アプリのタイトル画面です。ログインや新規アカウント作成を選択できる画面です。                                | アカウントを新規で作成することができる画面です。                                                                      |
 
-| ログイン画面                                                                                             | チュートリアル                                                                                                       |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| ![ログイン画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296342.png) | ![チュートリアル](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296349.png)        |
-| 作成したアカウントを用いてログインができる画面です。               | このアプリのチュートリアルを表示することができる画面です。                                          |
+| ログイン画面                                                                                                | チュートリアル                                                                                                |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| ![ログイン画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296342.png) | ![チュートリアル](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296349.png) |
+| 作成したアカウントを用いてログインができる画面です。                                                        | このアプリのチュートリアルを表示することができる画面です。                                                    |
 
-| 各画面の説明                                                                                             | 習慣記録(整数)                                                                                                       |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| ![各画面の説明](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296362.png) | ![習慣記録(整数)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296394.png)        |
-| 各画面で操作方法や項目の説明をダイアログで表示します。               | データタイプを整数にしたときの習慣の記録をするときのダイアログです。                                          |
+| 各画面の説明                                                                                                | 習慣記録(整数)                                                                                                |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| ![各画面の説明](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296362.png) | ![習慣記録(整数)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296394.png) |
+| 各画面で操作方法や項目の説明をダイアログで表示します。                                                      | データタイプを整数にしたときの習慣の記録をするときのダイアログです。                                          |
 
-| 習慣記録(時間(分))                                                                                             | 習慣記録(時間(秒))                                                                                                       |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| ![ログイン画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296415.png) | ![習慣記録(時間(秒))](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296434.png)        |
-| データタイプを時間(分)にしたときの習慣の記録をするときのダイアログです。               | データタイプを習慣記録(時間(秒)にしたときの習慣の記録をするときのダイアログです。                                          |
+| 習慣記録(時間(分))                                                                                          | 習慣記録(時間(秒))                                                                                                |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| ![ログイン画面](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296415.png) | ![習慣記録(時間(秒))](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296434.png) |
+| データタイプを時間(分)にしたときの習慣の記録をするときのダイアログです。                                    | データタイプを習慣記録(時間(秒))にしたときの習慣の記録をするときのダイアログです。                                |
 
-| 習慣記録(チェックボックス)                                                                                             | 習慣記録(５段階評価)                                                                                                       |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| ![習慣記録(チェックボックス)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296449.png) | ![チュートリアル](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296466.png)        |
-| データタイプをチェックボックスにしたときの習慣の記録をするときのダイアログです。               | データタイプを５段階評価にしたときの習慣の記録をするときのダイアログです。                                          |
+| 習慣記録(チェックボックス)                                                                                                | 習慣記録(５段階評価)                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| ![習慣記録(チェックボックス)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296449.png) | ![チュートリアル](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296466.png) |
+| データタイプをチェックボックスにしたときの習慣の記録をするときのダイアログです。                                          | データタイプを５段階評価にしたときの習慣の記録をするときのダイアログです。                                    |
 
-| 習慣記録(カウンター)                                                                                             | 
-| ------------------------------------------------------------------------------------------------------------------ | 
-| ![習慣記録(カウンター)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296482.png) | 
-| データタイプをカウンターにしたときの習慣の記録をするときのダイアログです。               | 
+| 習慣記録(カウンター)                                                                                                | ドロワーメニュー                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| ![習慣記録(カウンター)](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1729296482.png) | ![ドロワーメニュー](https://github.com/tndbcame/ur-habits-portfolio/blob/main/images/Screenshot_1739601846) |
+| データタイプをカウンターにしたときの習慣の記録をするときのダイアログです。                                          | パートナーを申請追加削除をするところです。左上の歯車アイコンから設定画面に遷移できます。                    |
+
 
 ## ⚪︎ 使用技術
 
-- `firebase_core: ^3.3.0`
+### **Firebase 関連**
+- `firebase_core: ^3.10.0`
 - `firebase_auth: ^5.1.4`
 - `cloud_firestore: ^5.2.1`
+
+### **ローカルデータベース**
 - `isar: ^3.1.0+1`
 - `isar_flutter_libs: ^3.1.0+1`
 - `isar_generator: ^3.1.0+1`
+- `shared_preferences: ^2.3.2`
+- `path_provider: ^2.1.4`
+
+### **状態管理**
 - `flutter_riverpod: ^2.5.1`
 - `riverpod_annotation: ^2.3.5`
 - `riverpod_generator: ^2.3.3`
 - `riverpod_lint: ^2.1.1`
-- `shared_preferences: ^2.3.2`
-- `path_provider: ^2.1.4`
-- `connectivity_plus: ^6.0.5`
-- `intl: ^0.19.0`
-- `uuid: ^4.4.2`
+
+### **UI 関連**
 - `google_fonts: ^6.2.1`
 - `cupertino_icons: ^1.0.8`
 - `flutter_rating_bar: ^4.0.1`
 - `fl_chart: ^0.68.0`
 - `community_material_icon: ^5.9.55`
 - `hugeicons: ^0.0.7`
-- `flutter_overboard: ^3.1.3`
-- `url_launcher: ^6.3.0`
-- `google_mobile_ads: ^5.1.0`
-- `flutter_launcher_icons: ^0.14.1`
+- `flutter_iconpicker: ^3.3.3`
+- `go_router: ^14.6.2`
+
+### **開発ツール**
 - `flutter_lints: ^4.0.0`
 - `build_runner: ^2.4.12`
 - `custom_lint: ^0.5.11`
+- `json_annotation: ^4.9.0`
+- `json_serializable: ^6.8.0`
+
+### **その他**
+- `connectivity_plus: ^6.0.5`
+- `intl: ^0.19.0`
+- `uuid: ^4.4.2`
+- `url_launcher: ^6.3.0`
+- `google_mobile_ads: ^5.1.0`
+- `flutter_launcher_icons: ^0.14.1`
+- `flutter_overboard: ^3.1.3`
+- `share_plus: ^10.1.3`
 
 ## ⚪︎ フォルダ構成
 
@@ -126,114 +148,123 @@
 │   └── extension             // 拡張メソッドを定義(アプリの文言等はここで管理)
 ├── routers                   // ルーティングの管理
 ├── utils
-│   ├── helper                // 各種ヘルパークラス
+│   ├── ads                   // 広告に関する操作を行う
 │   └── ui                    // UI関連のヘルパーとバリデーション
 ├── view_models
 │   ├── mappers               // データ変換ロジック
 │   └── providers             // 状態管理を行うプロバイダー
-└── views
-    ├── components            // 共通UIコンポーネント
-    └── screens               // 画面ごとのUI定義
+├── views
+│   ├── components            // 共通UIコンポーネント
+│   └── screens               // 画面ごとのUI定義
+└── main                      // firebaseやローカルDB、その他初期化処理
 ```
 
 ## ⚪︎ ステップ数
 
 ## Languages
-| language | files | code | comment | blank | total |
-| :--- | ---: | ---: | ---: | ---: | ---: |
-| Dart | 128 | 16,342 | 611 | 1,566 | 18,519 |
+| language | files |   code | comment | blank |  total |
+| :------- | ----: | -----: | ------: | ----: | -----: |
+| Dart     |   153 | 18,466 |     655 | 1,850 | 20,971 |
 
 ## Directories
-| path | files | code | comment | blank | total |
-| :--- | ---: | ---: | ---: | ---: | ---: |
-| . | 128 | 16,342 | 611 | 1,566 | 18,519 |
-| . (Files) | 2 | 95 | 18 | 10 | 123 |
-| data | 16 | 4,822 | 125 | 549 | 5,496 |
-| data/models | 12 | 3,767 | 24 | 429 | 4,220 |
-| data/models (Files) | 8 | 3,691 | 24 | 422 | 4,137 |
-| data/models/ui | 4 | 76 | 0 | 7 | 83 |
-| data/repositories | 2 | 930 | 79 | 96 | 1,105 |
-| data/services | 2 | 125 | 22 | 24 | 171 |
-| resources | 5 | 826 | 16 | 32 | 874 |
-| resources (Files) | 2 | 328 | 1 | 13 | 342 |
-| resources/extension | 3 | 498 | 15 | 19 | 532 |
-| routers | 1 | 144 | 18 | 10 | 172 |
-| utils | 9 | 449 | 54 | 69 | 572 |
-| utils (Files) | 1 | 45 | 7 | 6 | 58 |
-| utils/helper | 3 | 174 | 10 | 22 | 206 |
-| utils/helper (Files) | 1 | 58 | 3 | 4 | 65 |
-| utils/helper/ads | 2 | 116 | 7 | 18 | 141 |
-| utils/ui | 5 | 230 | 37 | 41 | 308 |
-| utils/ui (Files) | 2 | 81 | 20 | 27 | 128 |
-| utils/ui/validators | 3 | 149 | 17 | 14 | 180 |
-| view_models | 10 | 746 | 85 | 120 | 951 |
-| view_models (Files) | 2 | 332 | 55 | 57 | 444 |
-| view_models/mappers | 5 | 171 | 0 | 20 | 191 |
-| view_models/providers | 3 | 243 | 30 | 43 | 316 |
-| views | 85 | 9,260 | 295 | 776 | 10,331 |
-| views/components | 26 | 2,595 | 79 | 239 | 2,913 |
-| views/components/Indicator | 1 | 15 | 0 | 4 | 19 |
-| views/components/button | 5 | 401 | 0 | 50 | 451 |
-| views/components/calender | 2 | 440 | 24 | 45 | 509 |
-| views/components/dialog | 15 | 1,578 | 55 | 128 | 1,761 |
-| views/components/dialog (Files) | 1 | 61 | 0 | 3 | 64 |
-| views/components/dialog/caution_dialog | 4 | 281 | 10 | 25 | 316 |
-| views/components/dialog/caution_dialog (Files) | 2 | 180 | 3 | 11 | 194 |
-| views/components/dialog/caution_dialog/overlay | 2 | 101 | 7 | 14 | 122 |
-| views/components/dialog/input_dialog | 10 | 1,236 | 45 | 100 | 1,381 |
-| views/components/dialog/input_dialog (Files) | 7 | 993 | 33 | 80 | 1,106 |
-| views/components/dialog/input_dialog/button | 1 | 66 | 3 | 7 | 76 |
-| views/components/dialog/input_dialog/controller | 1 | 33 | 5 | 6 | 44 |
-| views/components/dialog/input_dialog/tile | 1 | 144 | 4 | 7 | 155 |
-| views/components/text | 2 | 43 | 0 | 5 | 48 |
-| views/components/tile | 1 | 118 | 0 | 7 | 125 |
-| views/screens | 59 | 6,665 | 216 | 537 | 7,418 |
-| views/screens/auth | 9 | 1,183 | 46 | 93 | 1,322 |
-| views/screens/auth (Files) | 5 | 966 | 45 | 77 | 1,088 |
-| views/screens/auth/components | 4 | 217 | 1 | 16 | 234 |
-| views/screens/auth/components/button | 1 | 46 | 0 | 3 | 49 |
-| views/screens/auth/components/container | 1 | 31 | 0 | 4 | 35 |
-| views/screens/auth/components/form | 1 | 91 | 0 | 5 | 96 |
-| views/screens/auth/components/tile | 1 | 49 | 1 | 4 | 54 |
-| views/screens/habit_detail | 18 | 1,736 | 58 | 147 | 1,941 |
-| views/screens/habit_detail (Files) | 4 | 969 | 42 | 73 | 1,084 |
-| views/screens/habit_detail/components | 14 | 767 | 16 | 74 | 857 |
-| views/screens/habit_detail/components/form | 2 | 114 | 4 | 12 | 130 |
-| views/screens/habit_detail/components/tile | 12 | 653 | 12 | 62 | 727 |
-| views/screens/habit_detail/components/tile (Files) | 2 | 172 | 10 | 20 | 202 |
-| views/screens/habit_detail/components/tile/goal_detail | 4 | 150 | 2 | 18 | 170 |
-| views/screens/habit_detail/components/tile/habit_detail | 6 | 331 | 0 | 24 | 355 |
-| views/screens/habit_record | 11 | 1,138 | 35 | 102 | 1,275 |
-| views/screens/habit_record (Files) | 1 | 439 | 12 | 38 | 489 |
-| views/screens/habit_record/components | 9 | 653 | 18 | 57 | 728 |
-| views/screens/habit_record/components/graph | 2 | 205 | 11 | 19 | 235 |
-| views/screens/habit_record/components/panel | 3 | 116 | 0 | 11 | 127 |
-| views/screens/habit_record/components/section | 2 | 154 | 0 | 8 | 162 |
-| views/screens/habit_record/components/tile | 1 | 88 | 4 | 10 | 102 |
-| views/screens/habit_record/components/toggle | 1 | 90 | 3 | 9 | 102 |
-| views/screens/habit_record/helper | 1 | 46 | 5 | 7 | 58 |
-| views/screens/setting | 8 | 636 | 11 | 51 | 698 |
-| views/screens/setting (Files) | 1 | 318 | 8 | 23 | 349 |
-| views/screens/setting/components | 7 | 318 | 3 | 28 | 349 |
-| views/screens/setting/components/tile | 7 | 318 | 3 | 28 | 349 |
-| views/screens/tabs | 12 | 1,814 | 61 | 135 | 2,010 |
-| views/screens/tabs (Files) | 1 | 288 | 8 | 22 | 318 |
-| views/screens/tabs/components | 7 | 916 | 38 | 74 | 1,028 |
-| views/screens/tabs/components/drawer | 4 | 599 | 16 | 36 | 651 |
-| views/screens/tabs/components/drawer (Files) | 1 | 280 | 8 | 12 | 300 |
-| views/screens/tabs/components/drawer/panel | 3 | 319 | 8 | 24 | 351 |
-| views/screens/tabs/components/panel | 2 | 192 | 12 | 21 | 225 |
-| views/screens/tabs/components/tile | 1 | 125 | 10 | 17 | 152 |
-| views/screens/tabs/home_tab | 2 | 347 | 7 | 24 | 378 |
-| views/screens/tabs/home_tab (Files) | 1 | 195 | 3 | 16 | 214 |
-| views/screens/tabs/home_tab/components | 1 | 152 | 4 | 8 | 164 |
-| views/screens/tabs/partner_tab | 2 | 263 | 8 | 15 | 286 |
-| views/screens/tabs/partner_tab (Files) | 1 | 91 | 3 | 6 | 100 |
-| views/screens/tabs/partner_tab/components | 1 | 172 | 5 | 9 | 186 |
-| views/screens/tutorial | 1 | 158 | 5 | 9 | 172 |
+| path                                                    | files |   code | comment | blank |  total |
+| :------------------------------------------------------ | ----: | -----: | ------: | ----: | -----: |
+| .                                                       |   153 | 18,466 |     655 | 1,850 | 20,971 |
+| . (Files)                                               |     1 |     69 |      10 |    13 |     92 |
+| data                                                    |    22 |  5,052 |     143 |   587 |  5,782 |
+| data/models                                             |    16 |  3,878 |      42 |   463 |  4,383 |
+| data/models (Files)                                     |     8 |  3,691 |      24 |   422 |  4,137 |
+| data/models/ui                                          |     8 |    187 |      18 |    41 |    246 |
+| data/repositories                                       |     4 |  1,049 |      79 |   100 |  1,228 |
+| data/repositories (Files)                               |     2 |    991 |      79 |    96 |  1,166 |
+| data/repositories/abstract                              |     2 |     58 |       0 |     4 |     62 |
+| data/services                                           |     2 |    125 |      22 |    24 |    171 |
+| resources                                               |     7 |    915 |      16 |    40 |    971 |
+| resources (Files)                                       |     2 |    347 |       1 |    15 |    363 |
+| resources/extension                                     |     5 |    568 |      15 |    25 |    608 |
+| routers                                                 |     3 |    472 |       4 |    85 |    561 |
+| utils                                                   |    12 |    605 |      69 |    86 |    760 |
+| utils (Files)                                           |     3 |     71 |       8 |    15 |     94 |
+| utils/ads                                               |     2 |    116 |       6 |    18 |    140 |
+| utils/ui                                                |     7 |    418 |      55 |    53 |    526 |
+| utils/ui (Files)                                        |     1 |     63 |      17 |    22 |    102 |
+| utils/ui/helpers                                        |     3 |    206 |      21 |    17 |    244 |
+| utils/ui/validators                                     |     3 |    149 |      17 |    14 |    180 |
+| view_models                                             |    10 |    740 |      85 |   120 |    945 |
+| view_models (Files)                                     |     2 |    326 |      55 |    57 |    438 |
+| view_models/mappers                                     |     5 |    171 |       0 |    20 |    191 |
+| view_models/providers                                   |     3 |    243 |      30 |    43 |    316 |
+| views                                                   |    98 | 10,613 |     328 |   919 | 11,860 |
+| views/components                                        |    39 |  3,950 |     105 |   359 |  4,414 |
+| views/components/Indicator                              |     1 |     15 |       0 |     4 |     19 |
+| views/components/bottom_sheet                           |     6 |    977 |      28 |    72 |  1,077 |
+| views/components/bottom_sheet (Files)                   |     5 |    757 |      25 |    65 |    847 |
+| views/components/bottom_sheet/tile                      |     1 |    220 |       3 |     7 |    230 |
+| views/components/button                                 |     6 |    425 |       0 |    52 |    477 |
+| views/components/calender                               |     4 |    563 |      22 |    59 |    644 |
+| views/components/cursor                                 |     1 |     40 |       0 |     9 |     49 |
+| views/components/dialog                                 |    15 |  1,544 |      55 |   138 |  1,737 |
+| views/components/dialog (Files)                         |     1 |     60 |       0 |     4 |     64 |
+| views/components/dialog/caution_dialog                  |     4 |    279 |      10 |    26 |    315 |
+| views/components/dialog/caution_dialog (Files)          |     2 |    177 |       3 |    12 |    192 |
+| views/components/dialog/caution_dialog/overlay          |     2 |    102 |       7 |    14 |    123 |
+| views/components/dialog/input_dialog                    |    10 |  1,205 |      45 |   108 |  1,358 |
+| views/components/dialog/input_dialog (Files)            |     7 |    967 |      33 |    86 |  1,086 |
+| views/components/dialog/input_dialog/button             |     1 |     64 |       3 |     8 |     75 |
+| views/components/dialog/input_dialog/controller         |     1 |     33 |       5 |     6 |     44 |
+| views/components/dialog/input_dialog/tile               |     1 |    141 |       4 |     8 |    153 |
+| views/components/scroll                                 |     2 |     38 |       0 |     8 |     46 |
+| views/components/tenkey                                 |     1 |    187 |       0 |     5 |    192 |
+| views/components/text                                   |     2 |     43 |       0 |     5 |     48 |
+| views/components/tile                                   |     1 |    118 |       0 |     7 |    125 |
+| views/screens                                           |    59 |  6,663 |     223 |   560 |  7,446 |
+| views/screens/auth                                      |     9 |  1,165 |      46 |    92 |  1,303 |
+| views/screens/auth (Files)                              |     5 |    948 |      45 |    76 |  1,069 |
+| views/screens/auth/components                           |     4 |    217 |       1 |    16 |    234 |
+| views/screens/auth/components/button                    |     1 |     46 |       0 |     3 |     49 |
+| views/screens/auth/components/container                 |     1 |     31 |       0 |     4 |     35 |
+| views/screens/auth/components/form                      |     1 |     91 |       0 |     5 |     96 |
+| views/screens/auth/components/tile                      |     1 |     49 |       1 |     4 |     54 |
+| views/screens/habit_detail                              |    18 |  1,713 |      58 |   150 |  1,921 |
+| views/screens/habit_detail (Files)                      |     4 |    953 |      42 |    76 |  1,071 |
+| views/screens/habit_detail/components                   |    14 |    760 |      16 |    74 |    850 |
+| views/screens/habit_detail/components/form              |     2 |    114 |       4 |    12 |    130 |
+| views/screens/habit_detail/components/tile              |    12 |    646 |      12 |    62 |    720 |
+| views/screens/habit_detail/components/tile (Files)      |     2 |    171 |      10 |    20 |    201 |
+| views/screens/habit_detail/components/tile/goal_detail  |     4 |    149 |       2 |    18 |    169 |
+| views/screens/habit_detail/components/tile/habit_detail |     6 |    326 |       0 |    24 |    350 |
+| views/screens/habit_record                              |    11 |  1,141 |      41 |   101 |  1,283 |
+| views/screens/habit_record (Files)                      |     1 |    439 |      19 |    38 |    496 |
+| views/screens/habit_record/components                   |     9 |    656 |      17 |    56 |    729 |
+| views/screens/habit_record/components/graph             |     2 |    205 |      11 |    19 |    235 |
+| views/screens/habit_record/components/panel             |     3 |    116 |       0 |    11 |    127 |
+| views/screens/habit_record/components/section           |     2 |    160 |       0 |     8 |    168 |
+| views/screens/habit_record/components/tile              |     1 |     88 |       4 |    10 |    102 |
+| views/screens/habit_record/components/toggle            |     1 |     87 |       2 |     8 |     97 |
+| views/screens/habit_record/helper                       |     1 |     46 |       5 |     7 |     58 |
+| views/screens/setting                                   |     8 |    616 |      11 |    57 |    684 |
+| views/screens/setting (Files)                           |     1 |    309 |       8 |    24 |    341 |
+| views/screens/setting/components                        |     7 |    307 |       3 |    33 |    343 |
+| views/screens/setting/components/tile                   |     7 |    307 |       3 |    33 |    343 |
+| views/screens/tabs                                      |    12 |  1,872 |      62 |   152 |  2,086 |
+| views/screens/tabs (Files)                              |     1 |    285 |       8 |    24 |    317 |
+| views/screens/tabs/components                           |     7 |    981 |      39 |    86 |  1,106 |
+| views/screens/tabs/components/drawer                    |     4 |    654 |      16 |    41 |    711 |
+| views/screens/tabs/components/drawer (Files)            |     1 |    323 |       8 |    16 |    347 |
+| views/screens/tabs/components/drawer/panel              |     3 |    331 |       8 |    25 |    364 |
+| views/screens/tabs/components/panel                     |     2 |    202 |      13 |    28 |    243 |
+| views/screens/tabs/components/tile                      |     1 |    125 |      10 |    17 |    152 |
+| views/screens/tabs/home_tab                             |     2 |    356 |       7 |    26 |    389 |
+| views/screens/tabs/home_tab (Files)                     |     1 |    195 |       3 |    17 |    215 |
+| views/screens/tabs/home_tab/components                  |     1 |    161 |       4 |     9 |    174 |
+| views/screens/tabs/partner_tab                          |     2 |    250 |       8 |    16 |    274 |
+| views/screens/tabs/partner_tab (Files)                  |     1 |     86 |       3 |     7 |     96 |
+| views/screens/tabs/partner_tab/components               |     1 |    164 |       5 |     9 |    178 |
+| views/screens/tutorial                                  |     1 |    156 |       5 |     8 |    169 |
 
-上記はVSCodeCounterで数えたものになります。.gファイル(自動生成ファイル)などを引いたステップ数は全体で14447、コードのみで12704です。
+上記はVSCodeCounterで数えたものになります。.gファイル(自動生成ファイル)を引いたステップ数は全体で16,593、コードのみで14,591です。
 
 ## ⚪︎ 今後の展望
 
-今後はパートナーの登録数や公開できる習慣数を機能の拡張をしていけたらと思います。またmodelやview_modelは冗長な部分が多いため、リファクタリングやライブラリを導入して、より管理しやすい拡張性のあるアプリにしていきたいと思います。
+今後はよりユーザーが使いやすいような機能を追加していきたいと考えています。(記録するときの追加項目等)
+DB関してfirebaseやローカルDBに依存してしまっている部分があるため、リファクタリングやライブラリの導入を視野に入れて、より管理しやすい拡張性のあるアプリにしていきたいです。
